@@ -1,6 +1,5 @@
 import './page.css';
 import axios from 'axios';
-import { axiosInstance } from '../config';
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { register } from '../redux/user/userSlice';
@@ -26,10 +25,7 @@ const RegisterPage = () => {
 
     try {
       console.log('start register');
-      const response = await axios.post(
-        'https://testing.com/api/auth/register',
-        loginForm,
-      );
+      const response = await axios.post('/api/auth/register', loginForm);
       console.log('finish register');
       if (response.status === 200) dispatch(register());
       console.log(response); //response.data 가 실제 payload...

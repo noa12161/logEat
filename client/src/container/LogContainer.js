@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { applyUser } from '../redux/user/userSlice';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { axiosInstance } from '../config';
 
 const LogContainer = ({ calculatedNutrition2, totalNutrition2 }) => {
   const dispatch = useDispatch();
@@ -25,7 +24,7 @@ const LogContainer = ({ calculatedNutrition2, totalNutrition2 }) => {
       date,
       mealObj,
     };
-    const res = await axiosInstance.post('/food/add', objForRequest);
+    const res = await axios.post('/api/food/add', objForRequest);
     localStorage.setItem('user', JSON.stringify(res.data));
     dispatch(applyUser(res.data));
   };
@@ -37,7 +36,7 @@ const LogContainer = ({ calculatedNutrition2, totalNutrition2 }) => {
       date,
       mealObj,
     };
-    const res = await axiosInstance.post('/food/delete', objForRequest);
+    const res = await axios.post('/api/food/delete', objForRequest);
     localStorage.setItem('user', JSON.stringify(res.data));
     dispatch(applyUser(res.data));
   };

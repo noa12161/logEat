@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { axiosInstance } from '../../config';
 import { Add, Close, DeleteOutline, Search } from '@material-ui/icons';
 import React, { useState, useEffect } from 'react';
 import './log.css';
@@ -34,7 +33,7 @@ const Log = ({
     e.preventDefault();
     if (nameOfFood === '') return;
     setCurrentPage(1);
-    const foodData = await axiosInstance.post('/searchFood/search', {
+    const foodData = await axios.post('/api/searchFood/search', {
       nameOfFood,
     });
     if (foodData.data === 'noData')

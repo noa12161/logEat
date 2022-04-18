@@ -4,7 +4,6 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { login } from '../redux/user/userSlice';
-import { axiosInstance } from '../config';
 
 const LoginPage = () => {
   const { user } = useSelector((state) => state.user);
@@ -32,7 +31,7 @@ const LoginPage = () => {
       router 이동시 메모리 lack 에러
     */
     try {
-      const response = await axiosInstance.post('/auth/login', loginForm);
+      const response = await axios.post('/api/auth/login', loginForm);
       setUsername('');
       setPassword('');
       console.log(response);

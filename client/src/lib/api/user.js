@@ -1,8 +1,7 @@
 import axios from 'axios';
-import { axiosInstance } from '../../config';
 // 현재 몸무게 변화 api
 export const changeBodyWeightApi = async (username, weight, date) => {
-  const data = await axiosInstance.post('/user/currentbodyweight', {
+  const data = await axios.post('/api/user/currentbodyweight', {
     username,
     weight,
     date,
@@ -12,7 +11,7 @@ export const changeBodyWeightApi = async (username, weight, date) => {
 
 // 목표 칼로리 변화 api
 export const changeCaloriesApi = async (username, calories) => {
-  const data = await axiosInstance.post('/user/currenttargetcalories', {
+  const data = await axios.post('/api/user/currenttargetcalories', {
     username,
     calories,
   });
@@ -21,7 +20,7 @@ export const changeCaloriesApi = async (username, calories) => {
 
 // 목표 영양성분 비율 변화 api
 export const changeRatioApi = async (username, ratio) => {
-  const data = await axiosInstance.post('/user/targetratio', {
+  const data = await axios.post('/api/user/targetratio', {
     username,
     ratio,
   });
