@@ -25,7 +25,9 @@ const RegisterPage = () => {
     const loginForm = { username, password, startWeight, targetCalorie };
 
     try {
+      console.log('start register');
       const response = await axiosInstance.post('/auth/register', loginForm);
+      console.log('finish register');
       if (response.status === 200) dispatch(register());
       console.log(response); //response.data 가 실제 payload...
     } catch (e) {
