@@ -3,10 +3,6 @@ import User from "../models/User.js";
 import { changeToStringFormat } from "../functions/userFunctions.js";
 const router = Router();
 
-router.get("/", (req, res) => {
-  res.send("working well");
-});
-
 // 몸무게 추가
 router.post("/bodyweight", async (req, res) => {
   const { username, date, weight } = req.body;

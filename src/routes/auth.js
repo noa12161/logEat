@@ -5,11 +5,6 @@ import { changeToStringFormat } from "../functions/userFunctions.js";
 
 const router = Router();
 
-router.get("/", (req, res) => {
-  console.log(req.cookies);
-
-  res.send("hello");
-});
 // 회원가입
 router.post("/register", async (req, res) => {
   console.log("in");
@@ -119,12 +114,6 @@ router.post("/check", async (req, res) => {
   } catch (e) {
     res.status(500).send(e);
   }
-});
-
-// 헤더 받아오기 테스트
-router.post("/testHeader", verify, (req, res) => {
-  console.log("req.user");
-  console.log(req.user);
 });
 
 export default router;
