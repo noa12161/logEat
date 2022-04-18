@@ -1,0 +1,183 @@
+.SideChart {
+  flex: 0.4;
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  padding: 1rem;
+  border-left-width: 1px;
+  border-left-style: solid;
+  overflow-y: scroll;
+}
+.SideChart > div {
+  width: 100%;
+  padding: 1rem;
+  /* background-color: aqua; */
+  border-bottom: 1.5px solid var(--borderLine-color);
+}
+
+/* 정보 입력 + 수정란 */
+.sideChart_information_container {
+}
+.sideChart_information_container > div {
+  /* background-color: blue; */
+  display: flex;
+  width: 100%;
+  border-bottom: 1.5px solid var(--borderLine-color);
+}
+.sideChart_information_container > div div:first-child {
+  /* background-color: red; */
+  flex: 1;
+  padding: 10px 0;
+}
+.sideChart_information_container > div div:nth-child(2) {
+  /* background-color: rebeccapurple; */
+  width: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.sideChart_information_container > div div:nth-child(2) button {
+  width: 100%;
+  border: none;
+  border-radius: 5px;
+  background-color: var(--button-color);
+}
+.sideChart_information_container > div div:nth-child(2) button:hover {
+  background-color: var(--button-hover-color);
+}
+
+/* PROGRESS BAR */
+/* 공통 */
+.target_bar_container {
+  display: flex;
+  width: 100%;
+  padding: 10px 0;
+}
+.current_bar_container {
+  display: flex;
+  width: 100%;
+  padding: 10px 0;
+}
+.cal_progress_bar {
+  height: 100%;
+  background-color: var(--progressBar-color);
+}
+.sideChart_outer_left {
+  /* background-color: red; */
+  width: 90px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+}
+.sideChart_outer_right {
+  /* background-color: rebeccapurple; */
+  flex: 1;
+  display: flex;
+}
+
+.sideChart_inner_left {
+  /* background-color: blue; */
+  flex: 1;
+}
+.sideChart_inner_right {
+  /* background-color: brown; */
+  width: 50px;
+  text-align: end;
+}
+.progress_bar {
+  background-color: var(--progressBar-color);
+  width: 100%;
+  height: 100%;
+}
+
+/* EDDITOR */
+.edditor {
+  background-color: rgb(207, 206, 206);
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.edditor_contents_container {
+  position: relative;
+  background-color: rgb(153, 151, 151);
+  width: 80%;
+  height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.editor_contents {
+  margin-top: 10px;
+  height: 80%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.editor_button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: inherit;
+  border: none;
+}
+.editor_contents span {
+  /* margin-top: 10px; */
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.edditor_contents_container form {
+  /* background-color: rebeccapurple; */
+  /* width: 50%; */
+  height: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  /* align-items: center; */
+}
+.editor_input_container {
+}
+.editor_input_container input {
+  width: 50px;
+  padding: 5px 10px;
+  font-size: 1.2rem;
+  border-radius: 5px;
+}
+.edditor input {
+  border-radius: 5px;
+}
+
+.edditor_contents_container form button {
+  /* background-color: var(--button-color); */
+  padding: 5px 10px;
+  font-weight: 600;
+  /* width: 50%; */
+  display: flex;
+  justify-content: center;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.5s;
+}
+.edditor_contents_container form button:hover {
+  background-color: var(--button-hover-color);
+  transition: 0.5s;
+}
+
+/* DATEPICKER */
+.datepicker_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.sideChart_datepicker {
+}

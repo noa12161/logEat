@@ -1,0 +1,13 @@
+.Chart {
+  min-height: calc(100vh - 110px);
+  padding: 1rem;
+  flex-direction: column;
+}
+
+.monthly_calories_chartContainer {
+  /* background-color: red; */
+  min-width: 700px;
+  width: 80%;
+  display: flex;
+  padding: 1.2rem;
+}

@@ -1,0 +1,32 @@
+.SideBar {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100vh;
+  flex: 0.2;
+  position: sticky;
+  top: 0;
+  padding: 1rem;
+  border-right-style: solid;
+  border-right-width: 1px;
+}
+.sidebar-logo-container {
+}
+.sidebar-logo-container img {
+}
+
+.sidebar-lists-container {
+  /* background-color: red; */
+}
+.sidebar-lists-container div {
+  padding: 1rem;
+  /* background-color: rebeccapurple; */
+  text-align: end;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  transition: 0.5s;
+}
+.sidebar-lists-container div:hover {
+  font-weight: bold;
+  transition: 0.2s;
+}

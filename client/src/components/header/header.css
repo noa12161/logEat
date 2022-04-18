@@ -1,0 +1,62 @@
+.Header {
+  display: flex;
+  justify-content: space-between;
+  height: 110px;
+  position: sticky;
+  top: 0;
+  padding: 1rem;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  z-index: 2;
+  background-color: var(--background-color);
+}
+
+.header_datepicker_container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  position: absolute;
+  width: 120px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.header_datepicker_container .calander {
+  font-size: 2rem;
+}
+.header_datepicker_container .calander_text {
+}
+
+.header_user_info_container {
+  display: flex;
+  align-items: flex-end;
+}
+.header_user_info_container div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 20px;
+  height: 25px;
+}
+
+.header_user_info_container .username {
+}
+.header_user_info_container .login {
+}
+
+.example-custom-input {
+  padding: 10px;
+  border: none;
+  font-weight: 600;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.5s;
+  background-color: var(--background-color);
+  border-radius: 10px;
+}
+
+.example-custom-input:hover {
+  /* font-size: 1.4rem;
+  border: 1px solid var(--borderLine-color); */
+  background-color: rgb(215, 215, 255);
+  transition: all 0.5s;
+}

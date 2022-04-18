@@ -1,0 +1,50 @@
+:root {
+  --background-color: rgb(250, 250, 250);
+  --borderLine-color: rgb(160, 160, 160);
+  --text-main: rgba(41, 41, 41, 1);
+  --text-sub: rgb(117, 117, 117);
+  --button-color: #b4d5e5;
+  --button-hover-color: #a1cade;
+  --progressBar-color: #b4d5e5;
+  --pane-padding: 5px 42px;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+}
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+div {
+  background-color: var(--background-color);
+}
+* {
+  box-sizing: border-box;
+  border-color: var(--borderLine-color);
+  /* background-color: var(--background-color); 이거하면 datepicker오류 */
+  color: var(--text-main);
+  text-decoration: none;
+}
+*:focus,
+*:hover,
+*:visited,
+*:link,
+*:active {
+  text-decoration: none;
+}
+a {
+  color: var(--text-main);
+}
+
+.jcac {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

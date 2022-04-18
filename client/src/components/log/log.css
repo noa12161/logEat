@@ -1,0 +1,209 @@
+* {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+input,
+button {
+  outline: none;
+  border: 1px solid var(--borderLine-color);
+}
+.Log {
+  min-height: calc(100vh - 110px);
+  padding: 1rem;
+  /* background-color: rgb(243, 234, 222); */
+}
+.log_wrapper {
+}
+.log_contents_container {
+  display: flex;
+  flex-direction: column;
+}
+.log_contents_upper {
+  height: 80px;
+  border: 1px solid var(--borderLine-color);
+}
+
+/* 실제 컨텐츠 영역 */
+.log_contents_down {
+  padding: 1rem 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 내 음식 정보 */
+.log_contents_down_myList {
+  border-top: 1px solid var(--borderLine-color);
+  border-bottom: 1px solid var(--borderLine-color);
+  padding: 1rem 0;
+  max-width: 580px;
+}
+/* 추가버튼 + 총 영양성분 */
+.log_contents_down_myList_addandTotal {
+  display: flex;
+  justify-content: center;
+}
+.log_contents_down_myList_add {
+  cursor: pointer;
+  flex: 1;
+}
+.log_contents_down_myList_totalNutrition {
+}
+.log_contents_down_myList_totalNutrition div {
+  display: flex;
+  flex-direction: column;
+  width: 65px;
+}
+.log_contents_down_myList_totalNutrition div span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+/* 먹은 음식 리스트 */
+.log_contents_down_myList_foodLists {
+  display: flex;
+  flex-direction: column;
+}
+.log_contents_down_myList_foodList {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15px 0;
+  max-width: 580px;
+}
+.log_contents_down_myList_foodList_left {
+  display: flex;
+  flex: 1;
+  justify-content: space-between;
+}
+/* 먹은음식 이름 + 용량 */
+.log_contents_down_myList_foodList_left_name {
+  font-weight: 600;
+  margin-right: 8px;
+  justify-content: start;
+}
+.log_contents_down_myList_foodList_left_quantity {
+  font-weight: 400;
+  font-size: 0.7rem;
+  width: 40px;
+  justify-content: end;
+}
+.log_contents_down_myList_foodList_left_quantity > div {
+  width: 100%;
+}
+.log_contents_down_myList_foodList_left_quantity > div > div {
+  text-align: end;
+}
+
+/* 먹은음식 영양성분 */
+.log_contents_down_myList_foodList_right {
+  display: flex;
+}
+.log_contents_down_myList_foodList_right div {
+  width: 65px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 음식 검색 컨테이너 */
+.log_contents_down_food_search_container {
+  border-top: 1px solid var(--borderLine-color);
+  border-bottom: 1px solid var(--borderLine-color);
+  margin-top: 30px;
+  padding: 10px 0;
+  position: relative;
+  max-width: 580px;
+}
+/* input + button */
+.log_contents_down_food_search {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+.log_contents_down_food_search input {
+  padding: 3px;
+  padding-left: 5px;
+  width: 180px;
+}
+.log_contents_down_food_search button {
+  width: 50px;
+}
+/* 검색한 음식 리스트 */
+.log_contents_down_food_searched_data_lists {
+  margin-top: 30px;
+}
+/* 영양성분 안내칸 */
+.food_searched_foodList_information {
+  display: flex;
+  justify-content: space-between;
+}
+.food_searched_foodList_information_left {
+}
+.food_searched_foodList_information_right {
+  display: flex;
+}
+.food_searched_foodList_information_right div {
+  width: 65px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 검색된 음식 정보 */
+.log_contents_down_food_searched_data_list {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  padding-left: 10px;
+}
+/* 음식이름 + 용량선택 */
+.food_searched_foodList_left {
+  flex: 1;
+  display: flex;
+  width: 45%;
+}
+.food_searched_foodList_foodName {
+  flex: 1;
+  display: flex;
+}
+.food_searched_foodList_foodName_add {
+  /* font-size: 0.3rem; */
+}
+.food_searched_foodList_foodName_name {
+  margin-right: 5px;
+}
+.food_searched_foodList_foodName_servWeight {
+  font-size: 0.6rem;
+}
+.food_searched_foodList_select_container {
+  flex: 0.3;
+  display: flex;
+}
+.food_searched_foodList_select_container input {
+  width: 60px;
+  height: 19px;
+}
+.food_searched_foodList_select_container select {
+  width: 49px;
+  height: 19px;
+}
+.food_searched_foodList_select_container select option {
+}
+/* 음식 영양성분 */
+.food_searched_foodList_right {
+  display: flex;
+}
+.food_searched_foodList_right div {
+  width: 65px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pagination_number:hover {
+  background-color: rgb(163, 182, 248);
+}
