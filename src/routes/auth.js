@@ -17,7 +17,6 @@ router.post("/test", (req, res) => {
 });
 router.post("/register", async (req, res) => {
   console.log("in");
-  return res.send("register work");
   const { username, password, startWeight, targetCalorie } = req.body;
   try {
     const exists = await User.findOne({ username });
