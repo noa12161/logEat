@@ -64,7 +64,7 @@ const RegisterPage = () => {
   }, [registerSuccess, navigate]);
 
   const testAxios = async () => {
-    const res = axios.post('/api/auth/test', { username: 'david' });
+    const res = await axios.post('/api/auth/test', { username: 'david' });
     console.log(res);
   };
 
