@@ -20,9 +20,7 @@ import userRouter from "./routes/user.js";
 const app = express();
 const PORT = process.env.PORT || 5000;
 mongoose
-  .connect(
-    "mongodb+srv://david1216:david9697@food-app.mkmin.mongodb.net/foodApp?retryWrites=true&w=majority"
-  )
+  .connect(process.env.MONGO_URL)
   .then(console.log("connected to DB"))
   .catch((e) => console.log(`err: ${e}`));
 
