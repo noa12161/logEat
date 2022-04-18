@@ -8,7 +8,9 @@ import { fileURLToPath } from "url";
 import { dirname } from "path";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-
+console.log(__filename);
+console.log(__dirname);
+console.log(path.join(__dirname, "../client/build"));
 // 라우터
 import authRoutes from "./routes/auth.js";
 import foodRoutes from "./routes/food.js";
@@ -34,10 +36,10 @@ app.use("/api/food", foodRoutes);
 app.use("/api/searchFood", searchRoutes);
 app.use("/api/user", userRouter);
 
-app.use(express.static(path.join(__dirname, "/client/build")));
+app.use(express.static(path.join(__dirname, "../client/build")));
 
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "/client/build", "index.html"));
+  res.sendFile(path.join(__dirname, "../client/build", "index.html"));
 });
 
 app.listen(PORT, () => console.log(`running server on ${PORT}`));
