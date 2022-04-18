@@ -6,6 +6,15 @@ import { changeToStringFormat } from "../functions/userFunctions.js";
 const router = Router();
 
 // 회원가입
+router.post("/test", (req, res) => {
+  console.log("in");
+  console.log(req.body);
+  try {
+    res.send("work!");
+  } catch (e) {
+    res.send(e);
+  }
+});
 router.post("/register", async (req, res) => {
   console.log("in");
   const { username, password, startWeight, targetCalorie } = req.body;

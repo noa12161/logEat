@@ -62,6 +62,12 @@ const RegisterPage = () => {
     console.log(registerSuccess);
     navigate('/', { replace: true });
   }, [registerSuccess, navigate]);
+
+  const testAxios = async () => {
+    const res = axios.post('/api/auth/test', { username: 'david' });
+    console.log(res);
+  };
+
   return (
     <div className="LoginPage_wrapper">
       <div className="form_desc">REGISTER</div>
@@ -97,6 +103,7 @@ const RegisterPage = () => {
           placeholder="목표 칼로리..."
         />
         <button>확인</button>
+        <button onClick={testAxios}>테스트</button>
       </form>
     </div>
   );
