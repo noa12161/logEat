@@ -6,6 +6,7 @@ const initialState = {
     calEditor: false,
     ratioEditor: false,
   },
+  showSideChart: true,
 };
 
 const buttonSlice = createSlice({
@@ -31,9 +32,16 @@ const buttonSlice = createSlice({
         },
       };
     },
+    setShowSideChart: (state, { payload: bool }) => {
+      return {
+        ...state,
+        showSideChart: bool,
+      };
+    },
   },
 });
 
-export const { setSideChartEditor, initSideChartEditor } = buttonSlice.actions;
+export const { setSideChartEditor, initSideChartEditor, setShowSideChart } =
+  buttonSlice.actions;
 
 export default buttonSlice.reducer;

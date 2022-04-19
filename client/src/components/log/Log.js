@@ -1,8 +1,18 @@
 import axios from 'axios';
-import { Add, Close, DeleteOutline, Search } from '@material-ui/icons';
+import {
+  Add,
+  Close,
+  InsertChartOutlinedRounded,
+  Search,
+} from '@material-ui/icons';
 import React, { useState, useEffect } from 'react';
 import './log.css';
 import Pagination from './Pagination';
+import MyFoodItem from './MyFoodItem';
+import SearchedFoodItem from './SearchedFoodItem';
+// 리덕스
+import { useSelector, useDispatch } from 'react-redux';
+import { setShowSideChart } from '../../redux/buttons/buttonSlice';
 
 const Log = ({
   currentDateTotalNutrition,
@@ -12,6 +22,8 @@ const Log = ({
   showSearch,
   handleSearchDisplay,
 }) => {
+  const dispatch = useDispatch();
+  const { windowWidth } = useSelector((state) => state.window);
   const [nameOfFood, setNameOfFood] = useState('');
   const [searchedFoodArray, setSearchedFoodArray] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -39,7 +51,6 @@ const Log = ({
     if (foodData.data === 'noData')
       return alert('데이터베이스에 없는 음식입니다...');
     setSearchedFoodArray(foodData.data);
-    console.log(foodData.data);
 
     setNameOfFood('');
   };
@@ -77,9 +88,17 @@ const Log = ({
   return (
     <div className="Log">
       <div className="log_wrapper">
+        {windowWidth <= 1024 && (
+          <div className="sideChart_toggle_button">
+            <InsertChartOutlinedRounded
+              style={{ fontSize: '3rem', cursor: 'pointer' }}
+              onClick={() => dispatch(setShowSideChart(true))}
+            />
+          </div>
+        )}
         <div className="log_contents_container">
           <div className="log_contents_upper jcac">
-            What shoud i feel this container with
+            What should i feel this container with
           </div>
           {/* 실제 컨텐츠 영역 */}
           <div className="log_contents_down">
@@ -132,42 +151,16 @@ const Log = ({
               <ul className="log_contents_down_myList_foodLists">
                 {calculatedNutrition &&
                   calculatedNutrition.map((f, i) => (
-                    <li key={i} className="log_contents_down_myList_foodList">
-                      <div className="log_contents_down_myList_foodList_left">
-                        <div className="log_contents_down_myList_foodList_left_name jcac">
-                          <DeleteOutline
-                            onClick={() => handleDeleteFood(f)}
-                            style={{
-                              width: '1rem',
-                              cursor: 'pointer',
-                              marginRight: '5px',
-                            }}
-                          />
-                          {f.foodName}
-                        </div>
-                        <div className="log_contents_down_myList_foodList_left_quantity jcac">
-                          {f.unit === f.servSizeWeight ? (
-                            <div>
-                              <div>
-                                {(f.unit / f.servSizeWeight) * f.qtt} serv
-                              </div>
-                              <div>{f.unit * f.qtt} g</div>
-                            </div>
-                          ) : (
-                            f.unit * f.qtt + 'g'
-                          )}
-                        </div>
-                      </div>
-                      <div className="log_contents_down_myList_foodList_right">
-                        <div>{f.cal}</div>
-                        <div>{f.carb}</div>
-                        <div>{f.protein}</div>
-                        <div>{f.fat}</div>
-                      </div>
-                    </li>
+                    <MyFoodItem
+                      key={i}
+                      i={i}
+                      f={f}
+                      handleDeleteFood={handleDeleteFood}
+                    />
                   ))}
               </ul>
             </div>
+            {/* 검색창 영역 */}
             {showSearch && (
               <div className="log_contents_down_food_search_container">
                 {/* 검색 input + 버튼 */}
@@ -207,82 +200,13 @@ const Log = ({
                     </div>
                     {/* 검색된 음식 정보 */}
                     {currentPosts.map((food, i) => (
-                      <li
+                      <SearchedFoodItem
                         key={i}
-                        className="log_contents_down_food_searched_data_list"
-                      >
-                        <div className="food_searched_foodList_left">
-                          {/* 음식이름 */}
-                          <div className="food_searched_foodList_foodName">
-                            <div className="food_searched_foodList_foodName_add jcac">
-                              <Add
-                                onClick={() => handleAddToDb(food)}
-                                style={{
-                                  width: '1rem',
-                                  cursor: 'pointer',
-                                  marginRight: '5px',
-                                }}
-                              />
-                            </div>
-                            <div className="food_searched_foodList_foodName_name jcac">
-                              {food.foodName}
-                            </div>
-                            <div className="food_searched_foodList_foodName_servWeight jcac">
-                              (1serv:{food.servSizeWeight}g)
-                            </div>
-                          </div>
-                          {/* 용량 선택 */}
-                          <div className="food_searched_foodList_select_container jcac">
-                            {/*qtt 용량*/}
-                            <input
-                              value={food.qtt}
-                              type="number"
-                              onChange={(e) => handleFoodQtt(e, food.id)}
-                            />
-                            {/* unit 용량 단위*/}
-                            <select
-                              defaultValue="serv"
-                              onChange={(e) =>
-                                handleFoodUnit(e, food.id, food.servSizeWeight)
-                              }
-                            >
-                              <option value="serv">serv</option>
-                              <option value="g">g</option>
-                            </select>
-                          </div>
-                        </div>
-                        {/* 음식 영양성분 */}
-                        <div className="food_searched_foodList_right">
-                          <div>
-                            {Math.floor(
-                              (food.oneServCal / food.servSizeWeight) *
-                                food.qtt *
-                                food.unit,
-                            )}
-                          </div>
-                          <div>
-                            {Math.floor(
-                              (food.oneServCarb / food.servSizeWeight) *
-                                food.qtt *
-                                food.unit,
-                            )}
-                          </div>
-                          <div>
-                            {Math.floor(
-                              (food.oneServProtein / food.servSizeWeight) *
-                                food.qtt *
-                                food.unit,
-                            )}
-                          </div>
-                          <div>
-                            {Math.floor(
-                              (food.oneServFat / food.servSizeWeight) *
-                                food.qtt *
-                                food.unit,
-                            )}
-                          </div>
-                        </div>
-                      </li>
+                        food={food}
+                        handleAddToDb={handleAddToDb}
+                        handleFoodQtt={handleFoodQtt}
+                        handleFoodUnit={handleFoodUnit}
+                      />
                     ))}
                     <Pagination
                       countOfItems={searchedFoodArray.length}

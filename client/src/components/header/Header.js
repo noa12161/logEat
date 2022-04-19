@@ -21,9 +21,8 @@ import {
   initializeFoodSlice,
 } from '../../redux/foods/foodSlice';
 
-const Header = () => {
+const Header = ({ user }) => {
   const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.user);
   const { monthCaloriesIntake } = useSelector((state) => state.food);
   const [prevUserState, setPrevUserState] = useState(user);
 
@@ -36,6 +35,7 @@ const Header = () => {
     </button>
   ));
 
+  // 로그아웃 함수
   const handleLogout = async () => {
     await axios.post('/api/auth/logout');
     dispatch(logout());
@@ -49,7 +49,8 @@ const Header = () => {
     dispatch(changeDate(startDate.toLocaleDateString()));
     //한달간 일일 열량섭취 값 구하기...
     const fn = async () => {
-      // 같은달을 이미 계산 했더라면 return
+      // 같은달을 이미 계산 했고..
+      // user의 정보가 변경되지 않았다면... return
       if (
         startDate.getMonth() + 1 === monthCaloriesIntake.currentMonth &&
         user === prevUserState
@@ -57,6 +58,13 @@ const Header = () => {
         return;
 
       dispatch(setMonthCaloriesIntakeStart());
+      /* data =
+      {
+        fullDate: dateString, //"2022. 4. 1."
+        date: i,  // 1,2,3,4,5......
+        cal: convertToFixedNum(cal), // 2000
+      } 이와 같은 객체들로 이루어진 배열 length = 선택 month의 days...
+      */
       const data = await getArrayOfMonthCaloriesIntake(
         configDaysinMonth(startDate),
         startDate,
@@ -71,7 +79,13 @@ const Header = () => {
       setPrevUserState(user);
     };
     fn();
-  }, [startDate, dispatch, monthCaloriesIntake.currentMonth, user]);
+  }, [
+    startDate,
+    dispatch,
+    monthCaloriesIntake.currentMonth,
+    user,
+    prevUserState,
+  ]);
 
   return (
     <div className="Header">

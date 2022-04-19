@@ -14,14 +14,17 @@ button {
   /* background-color: rgb(243, 234, 222); */
 }
 .log_wrapper {
+  position: relative;
 }
 .log_contents_container {
   display: flex;
   flex-direction: column;
+  align-items: center;
 }
 .log_contents_upper {
   height: 80px;
   border: 1px solid var(--borderLine-color);
+  max-width: 580px;
 }
 
 /* 실제 컨텐츠 영역 */
@@ -206,4 +209,44 @@ button {
 
 .pagination_number:hover {
   background-color: rgb(163, 182, 248);
+}
+
+/* TOGGLE BUTTON */
+.sideChart_toggle_button {
+  width: fit-content;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+/* RESPONSIVE */
+@media only screen and (max-width: 1024px) {
+}
+
+@media only screen and (max-width: 630px) {
+  /* Log 컴포넌트 */
+  .log_contents_down_myList_foodList_left {
+    flex-direction: column;
+    margin: auto;
+  }
+  .log_contents_down_myList_foodList_left_name {
+    justify-content: center;
+  }
+  .log_contents_down_myList_foodList_left_quantity {
+    justify-content: center;
+    width: auto;
+  }
+  .log_contents_down_myList_foodList_left_quantity > div {
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .food_searched_foodList_left {
+    flex-direction: column;
+  }
+  .food_searched_foodList_foodName {
+    flex-direction: column;
+  }
 }

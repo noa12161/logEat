@@ -17,7 +17,7 @@ const convertToFixedNum = (num) => {
   return parseInt(num);
 };
 
-// 전달받은 numnber만큼 요청해서 배열에 push 해서 배열을 return 하는 함수
+// 전달받은 days만큼 요청해서 응답값을 배열에 push 한다음 배열을 return 하는 함수
 export const getArrayOfMonthCaloriesIntake = async (days, fullDate, user) => {
   const ArrayOfMonthCaloriesIntake = [];
   for (let i = 1; i <= days; i++) {
@@ -64,23 +64,3 @@ export const getArrayOfMonthCaloriesIntake = async (days, fullDate, user) => {
 
   return ArrayOfMonthCaloriesIntake;
 };
-
-// const test = foodList.reduce((prv, cur) => {
-//   const isServ = checkUnit(f.unit, f.servSizeWeight);
-//   // 1회제공량일경우....
-//   if (isServ) {
-//     return {
-//       date: i,
-//       cal: foodList.reduce((prv, cur) => prv + cur.oneServCal * cur.qtt, 0),
-//     };
-//   } else {
-//     //1g당 일경우...
-//     return {
-//       date: i,
-//       cal: foodList.reduce(
-//         (prv, cur) => prv + (cur.oneServCal / cur.servSizeWeight) * cur.qtt,
-//         0,
-//       ),
-//     };
-//   }
-// }, 0);

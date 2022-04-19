@@ -1,10 +1,20 @@
+import './page.css';
+import SideBar from '../components/sidebar/SideBar';
+import Header from '../components/header/Header';
 import LogContainer from '../container/LogContainer';
+import SideChart from '../components/sideChart/SideChart';
 import ChartContainer from '../container/ChartContainer';
 import SocialContainer from '../container/SocialContainer';
+import NotFound from './NotFound';
+
 import { Routes, Route } from 'react-router-dom';
-import './page.css';
-import Header from '../components/header/Header';
-import SideBar from '../components/sidebar/SideBar';
+// 함수들...
+import {
+  getTotalNutrition,
+  getSumOfNutrition,
+} from '../lib/functions/calculate';
+import { changeToStringFormat } from '../lib/functions/common';
+import { changeBodyWeightApi, changeCaloriesApi } from '../lib/api/user';
 // 리덕스...
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
@@ -15,15 +25,7 @@ import {
   setFoodList,
   setTotalNutrition,
 } from '../redux/foods/foodSlice';
-import {
-  getTotalNutrition,
-  getSumOfNutrition,
-} from '../lib/functions/calculate';
 import { initSideChartEditor } from '../redux/buttons/buttonSlice';
-import NotFound from './NotFound';
-import SideChart from '../components/sideChart/SideChart';
-import { changeBodyWeightApi, changeCaloriesApi } from '../lib/api/user';
-import { changeToStringFormat } from '../lib/functions/common';
 
 const HomePage = () => {
   const dispatch = useDispatch();
@@ -87,6 +89,7 @@ const HomePage = () => {
     calories: '',
     ratio: {},
   });
+
   // 사용자 정보 editor value 변경 함수
   const handleUserStateValue = (e) => {
     // if (isNaN(e.target.value)) return alert('숫자를 입력해주세요...');
@@ -145,12 +148,15 @@ const HomePage = () => {
     <div className="HomePage">
       <SideBar />
       <div className="ContentsContainer">
-        <Header />
+        <Header user={user} />
         <Routes>
           <Route
             path="/"
             element={
               <LogContainer
+                user={user}
+                date={date}
+                foodList={foodList}
                 calculatedNutrition2={currentDateNutrition.calculatedNutrition}
                 totalNutrition2={currentDateNutrition.totalNutrition}
               />

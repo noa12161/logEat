@@ -30,3 +30,18 @@
   font-weight: bold;
   transition: 0.2s;
 }
+
+/* RESPONSIVE */
+@media only screen and (max-width: 1024px) {
+  /* 사이드바 */
+  .SideBar {
+    border: none;
+  }
+  .sidebar-logo-container {
+    display: none;
+  }
+  .sidebar-lists-container {
+    justify-content: center;
+    display: flex;
+  }
+}

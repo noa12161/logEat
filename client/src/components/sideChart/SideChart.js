@@ -6,8 +6,11 @@ import PieChart from '../chart/PieChart';
 import { Close } from '@material-ui/icons';
 import { IconButton } from '@mui/material';
 // 리덕스
-import { useDispatch } from 'react-redux';
-import { setSideChartEditor } from '../../redux/buttons/buttonSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  setSideChartEditor,
+  setShowSideChart,
+} from '../../redux/buttons/buttonSlice';
 // date-picker
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -23,6 +26,9 @@ const SideChart = ({
   sideChartEdditorHandler,
 }) => {
   const dispatch = useDispatch();
+  const { windowWidth } = useSelector((state) => state.window);
+  const { showSideChart } = useSelector((state) => state.buttons);
+  console.log(windowWidth);
   const [nutritionRatio, setNutritionRatio] = useState({
     carb: 5,
     protein: 3,
@@ -77,7 +83,22 @@ const SideChart = ({
   };
 
   return (
-    <div className="SideChart">
+    <div
+      className="SideChart"
+      style={{
+        position: windowWidth > 1024 ? 'sticky' : 'fixed',
+        right: windowWidth > 1024 ? 0 : showSideChart ? 0 : '-100%',
+        zIndex: windowWidth > 1024 ? 0 : showSideChart ? 10 : 0,
+      }}
+    >
+      {windowWidth <= 1024 && showSideChart && (
+        <div className="sideChart_close_button_container">
+          <Close
+            style={{ fontSize: '2rem', cursor: 'pointer' }}
+            onClick={() => dispatch(setShowSideChart(false))}
+          />
+        </div>
+      )}
       {/* 정보 입력 + 수정란 */}
       <div className="sideChart_information_container">
         <div className="sideChart_information_container_weight">
