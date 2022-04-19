@@ -6,7 +6,7 @@ const initialState = {
     calEditor: false,
     ratioEditor: false,
   },
-  showSideChart: true,
+  showSideChart: false,
 };
 
 const buttonSlice = createSlice({

@@ -70,3 +70,11 @@
     margin-right: 15px;
   }
 }
+@media only screen and (max-width: 425px) {
+  .header_user_info_container div {
+    padding: 0;
+  }
+  .username_greeting {
+    font-size: 0.7rem;
+  }
+}

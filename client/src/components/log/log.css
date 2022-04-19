@@ -250,3 +250,7 @@ button {
     flex-direction: column;
   }
 }
+@media only screen and (max-width: 425px) {
+  .sideChart_toggle_button {
+  }
+}

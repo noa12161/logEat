@@ -107,7 +107,7 @@ const Header = ({ user }) => {
       {user ? (
         <div className="header_user_info_container">
           <div className="username">
-            Hello{' '}
+            <span className="username_greeting">Hello</span>{' '}
             <span style={{ marginLeft: '7px', fontWeight: 'bold' }}>
               {user.username}
             </span>
@@ -120,11 +120,12 @@ const Header = ({ user }) => {
         </div>
       ) : (
         <div className="header_user_info_container">
-          <div className="username"></div>
-          <div className="login">
+          <div className="username">
             <div className="login_login">
               <Link to="/login">Login</Link>
             </div>
+          </div>
+          <div className="login">
             <div className="login_register">
               <Link to="/register">register</Link>
             </div>
