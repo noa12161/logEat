@@ -16,6 +16,6 @@
 @media only screen and (max-width: 1024px) {
   /* 차트 */
   .monthly_calories_chartContainer {
-    min-width: none;
+    min-width: 330px;
   }
 }
