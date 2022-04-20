@@ -28,6 +28,7 @@ const LogContainer = ({
 
   // 검색한 음식 DB에 추가하는 함수
   const handleAddToDb = async (mealObj) => {
+    if (!user) return alert('로그인이 필요합니다.');
     if (mealObj.qtt === '' || mealObj.qtt === 0)
       return alert('용량을 선택해주세요...');
     const objForRequest = {
