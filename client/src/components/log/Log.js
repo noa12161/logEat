@@ -15,6 +15,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { setShowSideChart } from '../../redux/buttons/buttonSlice';
 
 const Log = ({
+  user,
   currentDateTotalNutrition,
   calculatedNutrition,
   handleAddToDb,
@@ -85,6 +86,12 @@ const Log = ({
     if (!showSearch) return setSearchedFoodArray([]);
   }, [showSearch]);
 
+  // 사이드 차트 토글 버튼
+  const handleSideChartToggle = (bool) => {
+    if (!user) return alert('로그인이 필요합니다.');
+    dispatch(setShowSideChart(bool));
+  };
+
   return (
     <div className="Log">
       <div className="log_wrapper">
@@ -92,7 +99,7 @@ const Log = ({
           <div className="sideChart_toggle_button">
             <InsertChartOutlinedRounded
               style={{ fontSize: '3rem', cursor: 'pointer' }}
-              onClick={() => dispatch(setShowSideChart(true))}
+              onClick={() => handleSideChartToggle(true)}
             />
           </div>
         )}
