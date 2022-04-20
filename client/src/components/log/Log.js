@@ -97,9 +97,7 @@ const Log = ({
           </div>
         )}
         <div className="log_contents_container">
-          <div className="log_contents_upper jcac">
-            What should i feel this container with
-          </div>
+          <div className="log_contents_upper jcac">개발중....</div>
           {/* 실제 컨텐츠 영역 */}
           <div className="log_contents_down">
             <div className="log_contents_down_myList">
@@ -109,20 +107,22 @@ const Log = ({
                   onClick={() => handleSearchDisplay(true)}
                   className="log_contents_down_myList_add jcac"
                 >
-                  <Add />
-                  <span>Add</span>
+                  <Add style={{ fill: '#068b2e' }} />
+                  <span style={{ color: '#068b2e' }}>추가하기</span>
                 </div>
                 <div className="log_contents_down_myList_totalNutrition jcac">
                   <div>
-                    <span>cal</span>
+                    <span>열량</span>
                     <span>
-                      {currentDateTotalNutrition
-                        ? currentDateTotalNutrition.cal
-                        : 0}
+                      <strong>
+                        {currentDateTotalNutrition
+                          ? currentDateTotalNutrition.cal
+                          : 0}
+                      </strong>
                     </span>
                   </div>
                   <div>
-                    <span>carb</span>
+                    <span>탄수화물</span>
                     <span>
                       {currentDateTotalNutrition
                         ? currentDateTotalNutrition.carb
@@ -130,7 +130,7 @@ const Log = ({
                     </span>
                   </div>
                   <div>
-                    <span>protein</span>
+                    <span>단백질</span>
                     <span>
                       {currentDateTotalNutrition
                         ? currentDateTotalNutrition.protein
@@ -138,7 +138,7 @@ const Log = ({
                     </span>
                   </div>
                   <div>
-                    <span>fat</span>
+                    <span>지방</span>
                     <span>
                       {currentDateTotalNutrition
                         ? currentDateTotalNutrition.fat
@@ -192,10 +192,10 @@ const Log = ({
                     <div className="food_searched_foodList_information">
                       <div className="food_searched_foodList_information_left"></div>
                       <div className="food_searched_foodList_information_right">
-                        <div>cal</div>
-                        <div>carb</div>
-                        <div>protein</div>
-                        <div>fat</div>
+                        <div>열량</div>
+                        <div>탄수화물</div>
+                        <div>단백질</div>
+                        <div>지방</div>
                       </div>
                     </div>
                     {/* 검색된 음식 정보 */}

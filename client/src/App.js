@@ -24,7 +24,7 @@ function App() {
   };
 
   return (
-    <div className="App">
+    <div className="App background">
       <Routes>
         <Route path="/*" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />

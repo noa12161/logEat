@@ -69,9 +69,9 @@ const SideChart = ({
         {
           label: '탄단지 비율',
           data: [nutrition.carb, nutrition.protein, nutrition.fat],
-          backgroundColor: ['red', 'blue', 'yellow'],
+          backgroundColor: ['#DC488A', '#473188', '#F8A523'],
           borderColor: 'black',
-          borderWidth: 3,
+          borderWidth: 1,
         },
       ],
     });
@@ -103,7 +103,7 @@ const SideChart = ({
       <div className="sideChart_information_container">
         <div className="sideChart_information_container_weight">
           <div className="sideChart_information_container_weight_left">
-            현재 체중: {user.currentWeight}kg
+            현재 체중: <strong>{user.currentWeight}</strong>kg
           </div>
           <div className="sideChart_information_container_weight_right">
             <button
@@ -115,7 +115,7 @@ const SideChart = ({
         </div>
         <div className="sideChart_information_container_cal">
           <div className="sideChart_information_container_cal_left">
-            목표 칼로리: {user.currentTargetCalories}kcal
+            목표 칼로리: <strong>{user.currentTargetCalories}</strong>kcal
           </div>
           <div className="sideChart_information_container_cal_right">
             <button onClick={() => dispatch(setSideChartEditor('calEditor'))}>
@@ -125,13 +125,16 @@ const SideChart = ({
         </div>
         <div className="sideChart_information_container_ratio">
           <div className="sideChart_information_container_ratio_left">
-            목표 탄단지 비율: {nutritionRatio.carb} : {nutritionRatio.protein} :{' '}
-            {nutritionRatio.fat}
+            목표 탄단지 비율:{' '}
+            <strong>
+              {nutritionRatio.carb} : {nutritionRatio.protein} :{' '}
+              {nutritionRatio.fat}
+            </strong>
           </div>
           <div className="sideChart_information_container_ratio_right">
-            <button onClick={() => dispatch(setSideChartEditor('ratioEditor'))}>
+            {/* <button onClick={() => dispatch(setSideChartEditor('ratioEditor'))}>
               수정
-            </button>
+            </button> */}
           </div>
         </div>
       </div>

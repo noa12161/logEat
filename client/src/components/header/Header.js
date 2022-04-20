@@ -92,7 +92,8 @@ const Header = ({ user }) => {
       <div></div>
       <div className="header_datepicker_container jcac">
         <div className="calander jcac">
-          <BsCalendar3Event />
+          날짜 선택
+          {/* <BsCalendar3Event /> */}
         </div>
         <div className="calander_text jcac">
           <DatePicker

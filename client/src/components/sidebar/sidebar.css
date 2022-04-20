@@ -11,8 +11,15 @@
   border-right-width: 1px;
 }
 .sidebar-logo-container {
+  display: flex;
+  justify-content: flex-end;
 }
-.sidebar-logo-container img {
+.logo_img_container {
+  width: 70px;
+}
+.logo_img_container img {
+  width: 100%;
+  border-radius: 50%;
 }
 
 .sidebar-lists-container {
@@ -36,6 +43,7 @@
   /* 사이드바 */
   .SideBar {
     border: none;
+    background-color: var(--topBar-color);
   }
   .sidebar-logo-container {
     display: none;

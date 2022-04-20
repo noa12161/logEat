@@ -15,9 +15,10 @@ const SearchedFoodItem = ({
             <Add
               onClick={() => handleAddToDb(food)}
               style={{
-                width: '1rem',
+                fontSize: '1.5rem',
                 cursor: 'pointer',
                 marginRight: '5px',
+                fill: '#068b2e',
               }}
             />
           </div>

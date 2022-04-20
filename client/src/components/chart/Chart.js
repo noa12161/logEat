@@ -23,7 +23,7 @@ const Chart = ({ user }) => {
           data: monthCaloriesIntake.data.map((d) => d.cal),
           backgroundColor: ['red', 'blue', 'yellow', 'purple'],
           borderColor: 'black',
-          borderWidth: 3,
+          borderWidth: 1,
         },
       ],
     });
@@ -48,7 +48,7 @@ const Chart = ({ user }) => {
           data: sortBWByDate.map((d) => d.weight),
           backgroundColor: ['red', 'blue', 'yellow', 'purple'],
           borderColor: 'black',
-          borderWidth: 3,
+          borderWidth: 1,
         },
       ],
     });

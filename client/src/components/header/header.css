@@ -21,7 +21,9 @@
   transform: translateX(-50%);
 }
 .header_datepicker_container .calander {
-  font-size: 2rem;
+  font-size: 1.3rem;
+  font-weight: 600;
+  padding: 5px 0;
 }
 .header_datepicker_container .calander_text {
 }
@@ -52,7 +54,6 @@
   font-size: 1.2rem;
   cursor: pointer;
   transition: all 0.5s;
-  background-color: var(--background-color);
   border-radius: 10px;
 }
 
@@ -66,6 +67,9 @@
 /* RESPONSIVE */
 @media only screen and (max-width: 1024px) {
   /* 헤더 */
+  .Header {
+    background-color: var(--topBar-color);
+  }
   .header_user_info_container {
     margin-right: 15px;
   }

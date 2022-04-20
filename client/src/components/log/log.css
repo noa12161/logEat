@@ -38,8 +38,6 @@ button {
 
 /* 내 음식 정보 */
 .log_contents_down_myList {
-  border-top: 1px solid var(--borderLine-color);
-  border-bottom: 1px solid var(--borderLine-color);
   padding: 1rem 0;
   max-width: 580px;
 }
@@ -47,6 +45,8 @@ button {
 .log_contents_down_myList_addandTotal {
   display: flex;
   justify-content: center;
+  background-color: var(--listItem-color);
+  border-radius: 10px 10px 0px 0px;
 }
 .log_contents_down_myList_add {
   cursor: pointer;
@@ -63,11 +63,10 @@ button {
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 30px;
 }
 /* 먹은 음식 리스트 */
 .log_contents_down_myList_foodLists {
-  display: flex;
-  flex-direction: column;
 }
 .log_contents_down_myList_foodList {
   display: flex;
@@ -75,29 +74,37 @@ button {
   align-items: center;
   padding: 15px 0;
   max-width: 580px;
+  background-color: var(--listItem-color);
+  margin: 5px 0px;
+  border-radius: 10px;
 }
 .log_contents_down_myList_foodList_left {
   display: flex;
   flex: 1;
-  justify-content: space-between;
+  flex-direction: column;
 }
 /* 먹은음식 이름 + 용량 */
 .log_contents_down_myList_foodList_left_name {
-  font-weight: 600;
+  font-weight: 500;
   margin-right: 8px;
-  justify-content: start;
 }
+.delete_icon_container {
+  padding: 0 5px;
+}
+.log_contents_down_myList_foodList_left_name_Name {
+  flex: 1;
+  text-align: center;
+  font-weight: 600;
+}
+
 .log_contents_down_myList_foodList_left_quantity {
   font-weight: 400;
   font-size: 0.7rem;
-  width: 40px;
-  justify-content: end;
+  justify-content: center;
 }
 .log_contents_down_myList_foodList_left_quantity > div {
-  width: 100%;
 }
 .log_contents_down_myList_foodList_left_quantity > div > div {
-  text-align: end;
 }
 
 /* 먹은음식 영양성분 */
@@ -133,6 +140,7 @@ button {
 }
 .log_contents_down_food_search button {
   width: 50px;
+  cursor: pointer;
 }
 /* 검색한 음식 리스트 */
 .log_contents_down_food_searched_data_lists {
@@ -142,6 +150,8 @@ button {
 .food_searched_foodList_information {
   display: flex;
   justify-content: space-between;
+  background-color: var(--listItem-color);
+  border-radius: 10px 10px 0 0;
 }
 .food_searched_foodList_information_left {
 }
@@ -153,6 +163,7 @@ button {
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 5px 0;
 }
 
 /* 검색된 음식 정보 */
@@ -162,12 +173,14 @@ button {
   align-items: center;
   padding: 10px 0;
   padding-left: 10px;
+  background-color: var(--listItem-color);
+  margin: 5px 0px;
+  border-radius: 10px;
 }
 /* 음식이름 + 용량선택 */
 .food_searched_foodList_left {
   flex: 1;
   display: flex;
-  width: 45%;
 }
 .food_searched_foodList_foodName {
   flex: 1;
@@ -178,6 +191,7 @@ button {
 }
 .food_searched_foodList_foodName_name {
   margin-right: 5px;
+  font-weight: 600;
 }
 .food_searched_foodList_foodName_servWeight {
   font-size: 0.6rem;
@@ -223,34 +237,72 @@ button {
 @media only screen and (max-width: 1024px) {
 }
 
-@media only screen and (max-width: 630px) {
-  /* Log 컴포넌트 */
-  .log_contents_down_myList_foodList_left {
-    flex-direction: column;
-    margin: auto;
-  }
-  .log_contents_down_myList_foodList_left_name {
-    justify-content: center;
-  }
-  .log_contents_down_myList_foodList_left_quantity {
-    justify-content: center;
-    width: auto;
-  }
-  .log_contents_down_myList_foodList_left_quantity > div {
-    justify-content: center;
+@media only screen and (max-width: 625px) {
+  .food_searched_foodList_information {
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    justify-content: space-between;
   }
-
+  .food_searched_foodList_information_right {
+    font-size: 0.75rem;
+  }
+  .food_searched_foodList_information_right div {
+    width: 50px;
+  }
+  .log_contents_down_food_searched_data_list {
+    margin: 5px 0;
+  }
   .food_searched_foodList_left {
+    width: 100%;
     flex-direction: column;
   }
   .food_searched_foodList_foodName {
     flex-direction: column;
   }
+  .food_searched_foodList_foodName > div {
+    padding-bottom: 2px;
+  }
+  .food_searched_foodList_foodName_name {
+    width: 167px;
+    font-size: 0.85rem;
+  }
+  .food_searched_foodList_right {
+    justify-content: flex-end;
+    font-size: 0.72rem;
+    padding-top: 10px;
+    width: 100%;
+  }
+  .food_searched_foodList_right div {
+    width: 50px;
+  }
+
+  .log_contents_down_myList_foodList {
+    margin: 5px 0px;
+    border-radius: 10px;
+  }
+  .log_contents_down_myList_foodList_right {
+    font-size: 0.8rem;
+  }
+  .log_contents_down_myList_foodList_left_quantity {
+    padding-top: 5px;
+  }
 }
+
+@media only screen and (max-width: 500px) {
+  .food_searched_foodList_foodName_name {
+    width: 104px;
+  }
+}
+
 @media only screen and (max-width: 425px) {
-  .sideChart_toggle_button {
+  .log_contents_down_myList_foodList_left_name_Name {
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+  .log_contents_down_myList_totalNutrition div {
+    width: 50px;
+    font-size: 0.75rem;
+  }
+  .log_contents_down_myList_foodList_right div {
+    width: 50px;
   }
 }

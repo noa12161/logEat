@@ -1,23 +1,27 @@
 import React from 'react';
 import './sidebar.css';
-import logo from '../../images/logo.PNG';
+import logo from '../../images/logo2.png';
 import { Link } from 'react-router-dom';
 
 const SideBar = () => {
   return (
     <div className="SideBar">
       <div className="sidebar-logo-container">
-        <img src={logo} alt="" />
+        <div className="logo_img_container">
+          <Link to="/">
+            <img src={logo} alt="logo" />
+          </Link>
+        </div>
       </div>
       <div className="sidebar-lists-container">
         <Link to="/">
-          <div>Log</div>
+          <div>기록</div>
         </Link>
         <Link to="/chart">
-          <div>Chart</div>
+          <div>그래프</div>
         </Link>
         <Link to="/social">
-          <div>Social</div>
+          <div>게시글</div>
         </Link>
       </div>
       <div></div>

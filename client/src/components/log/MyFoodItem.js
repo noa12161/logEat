@@ -5,15 +5,19 @@ const MyFoodItem = ({ f, handleDeleteFood }) => {
     <li className="log_contents_down_myList_foodList">
       <div className="log_contents_down_myList_foodList_left">
         <div className="log_contents_down_myList_foodList_left_name jcac">
-          <DeleteOutline
-            onClick={() => handleDeleteFood(f)}
-            style={{
-              width: '1rem',
-              cursor: 'pointer',
-              marginRight: '5px',
-            }}
-          />
-          {f.foodName}
+          <div className="delete_icon_container">
+            <DeleteOutline
+              onClick={() => handleDeleteFood(f)}
+              style={{
+                width: '1rem',
+                cursor: 'pointer',
+                fill: '#e43434',
+              }}
+            />
+          </div>
+          <div className="log_contents_down_myList_foodList_left_name_Name">
+            {f.foodName}
+          </div>
         </div>
         <div className="log_contents_down_myList_foodList_left_quantity jcac">
           {f.unit === f.servSizeWeight ? (
