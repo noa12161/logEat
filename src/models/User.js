@@ -14,6 +14,7 @@ const mealSchema = new mongoose.Schema({
 const UserSchema = new mongoose.Schema({
   username: {
     type: String,
+    unique: true,
     required: true,
   },
   hashedPassword: {
@@ -65,13 +66,17 @@ const UserSchema = new mongoose.Schema({
       default: 2,
     },
   },
+  role: {
+    type: String,
+    default: "user",
+  },
 });
 
 UserSchema.methods.generateToken = function () {
   const token = jwt.sign(
     {
-      id: this._id,
-      username: this.username,
+      _id: this._id,
+      role: this.role,
     },
     process.env.JWT_SEC, // 두번째 파라미터에는 JWT 암호를 넣습니다.
     {

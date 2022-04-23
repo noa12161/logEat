@@ -2,26 +2,26 @@ import { Router } from "express";
 import User from "../models/User.js";
 import jwt from "jsonwebtoken";
 import { changeToStringFormat } from "../functions/userFunctions.js";
+import verifyJwt from "../middleWare/verifyJwt.js";
 
 const router = Router();
 
 // 회원가입
-router.post("/test", (req, res) => {
-  console.log("in");
-  console.log(req.body);
+router.post("/test", verifyJwt, (req, res) => {
+  if (!req.user) return res.status(401);
   try {
-    res.send("work!");
+    console.log(req.user);
+    res.send(req.user);
   } catch (e) {
     res.send(e);
   }
 });
 router.post("/register", async (req, res) => {
-  console.log("in");
   const { username, password, startWeight, targetCalorie } = req.body;
   try {
     const exists = await User.findOne({ username });
     if (exists) {
-      return res.status(409); //Conflict
+      return res.status(404); // Not Found
     }
 
     const user = new User({
@@ -46,12 +46,6 @@ router.post("/register", async (req, res) => {
 
     //비밀번호를 제외한 유저 정보
     res.json(user.hidePassword());
-
-    // const token = user.generateToken();
-    // res.cookie("access_token", token, {
-    //   maxAge: 1000 * 60 * 60 * 24 * 1, //1일
-    //   httpOnly: true,
-    // });
   } catch (e) {
     res.status(500).json(e);
   }
@@ -74,9 +68,9 @@ router.post("/login", async (req, res) => {
     if (!valid) return res.status(401).json("error");
 
     const accessToken = user.generateToken();
-    res.cookie("access_token", accessToken, {
+    res.cookie("accessToken", accessToken, {
       maxAge: 1000 * 60 * 60 * 24 * 1, //1일
-      httpOnly: true,
+      httpOnly: true, // 브라우저 자바스크립트로 접근 불가
     });
     const secureUser = user.hidePassword();
     res.send({ ...secureUser, accessToken });
@@ -90,22 +84,6 @@ router.post("/logout", (req, res) => {
   res.clearCookie("access_token");
   res.status(204).json("logout success!");
 });
-
-const verify = (req, res, next) => {
-  const token = req.headers.authorization;
-  if (token) {
-    jwt.verify(token, process.env.JWT_SEC, (err, user) => {
-      if (err) {
-        return res.status(403).json("Token is not valid!");
-      }
-
-      req.user = user;
-      next();
-    });
-  } else {
-    res.status(401).json("You are not authenticated!");
-  }
-};
 
 router.post("/check", async (req, res) => {
   const { token } = req.body;
