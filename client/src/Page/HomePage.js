@@ -150,6 +150,7 @@ const HomePage = () => {
       <div className="ContentsContainer">
         <Header user={user} />
         <Routes>
+          {/* 주요 기능 실행 컴포넌트...(음식 검색, 음식 기록 등등...) */}
           <Route
             path="/"
             element={
@@ -162,7 +163,9 @@ const HomePage = () => {
               />
             }
           />
+          {/* 대부분 디스플레이만 하는 컴포넌트... */}
           <Route path="/chart" element={<ChartContainer user={user} />} />
+          {/* 게시판 컴포넌트... */}
           <Route path="/social/*" element={<SocialContainer />} />
           <Route path="/*" element={<NotFound />} />
         </Routes>
