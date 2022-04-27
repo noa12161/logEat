@@ -50,14 +50,15 @@ const Header = ({ user }) => {
     //한달간 일일 열량섭취 값 구하기...
     const fn = async () => {
       // 같은달을 이미 계산 했고..
-      // user의 정보가 변경되지 않았다면... return
+      // user의 정보가 변경되지 않았다면..return
+      // eg) 유저가 음식을 추가하면 다시 계산함... month 단위가 변하면 다시 계산...
       if (
         startDate.getMonth() + 1 === monthCaloriesIntake.currentMonth &&
         user === prevUserState
       )
         return;
 
-      dispatch(setMonthCaloriesIntakeStart());
+      dispatch(setMonthCaloriesIntakeStart()); //thunk 로 대체..
       /* data =
       {
         fullDate: dateString, //"2022. 4. 1."
@@ -114,21 +115,25 @@ const Header = ({ user }) => {
             </span>
           </div>
           <div className="login">
-            <div style={{ cursor: 'pointer' }} onClick={handleLogout}>
-              Logout
+            <div
+              className="login_button_style"
+              style={{ cursor: 'pointer' }}
+              onClick={handleLogout}
+            >
+              로그아웃
             </div>
           </div>
         </div>
       ) : (
         <div className="header_user_info_container">
           <div className="username">
-            <div className="login_login">
-              <Link to="/login">Login</Link>
+            <div className="login_login login_button_style">
+              <Link to="/login">로그인</Link>
             </div>
           </div>
           <div className="login">
-            <div className="login_register">
-              <Link to="/register">register</Link>
+            <div className="login_register login_button_style">
+              <Link to="/register">회원가입</Link>
             </div>
           </div>
         </div>

@@ -7,21 +7,13 @@ const initialState = {
     ratioEditor: false,
   },
   showSideChart: false,
+  showSearchFood: false,
 };
 
 const buttonSlice = createSlice({
   name: 'buttons',
   initialState,
   reducers: {
-    setSideChartEditor: (state, { payload: name }) => {
-      return {
-        ...state,
-        sideChartEdditorHandler: {
-          ...state.sideChartEdditorHandler,
-          [name]: !state.sideChartEdditorHandler[name],
-        },
-      };
-    },
     initSideChartEditor: (state) => {
       return {
         ...state,
@@ -32,16 +24,35 @@ const buttonSlice = createSlice({
         },
       };
     },
+    setSideChartEditor: (state, { payload: name }) => {
+      return {
+        ...state,
+        sideChartEdditorHandler: {
+          ...state.sideChartEdditorHandler,
+          [name]: !state.sideChartEdditorHandler[name],
+        },
+      };
+    },
     setShowSideChart: (state, { payload: bool }) => {
       return {
         ...state,
         showSideChart: bool,
       };
     },
+    setShowSearchFood: (state, { payload: bool }) => {
+      return {
+        ...state,
+        showSearchFood: bool,
+      };
+    },
   },
 });
 
-export const { setSideChartEditor, initSideChartEditor, setShowSideChart } =
-  buttonSlice.actions;
+export const {
+  setSideChartEditor,
+  initSideChartEditor,
+  setShowSideChart,
+  setShowSearchFood,
+} = buttonSlice.actions;
 
 export default buttonSlice.reducer;

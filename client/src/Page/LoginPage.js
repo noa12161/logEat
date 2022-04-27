@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { login } from '../redux/user/userSlice';
+import { loginApi } from '../lib/api/auth';
 
 const LoginPage = () => {
   const { user } = useSelector((state) => state.user);
@@ -31,24 +32,13 @@ const LoginPage = () => {
       router 이동시 메모리 lack 에러
     */
     try {
-      const response = await axios.post('/api/auth/login', loginForm);
+      const response = await loginApi(loginForm);
       setUsername('');
       setPassword('');
       console.log(response);
       dispatch(login(response.data));
     } catch (e) {
       console.log(e);
-    }
-  };
-
-  const axiosJWT = axios.create();
-  const sendHeaders = async () => {
-    try {
-      await axiosJWT.post('/api/auth/testHeader', user, {
-        headers: { authorization: user.accessToken },
-      });
-    } catch (err) {
-      console.log(err);
     }
   };
 
@@ -81,11 +71,8 @@ const LoginPage = () => {
           type="text"
           placeholder="password..."
         />
-
         <button>확인</button>
       </form>
-      <button onClick={() => axios.get('/api/auth')}>쿠키확인</button>
-      <button onClick={sendHeaders}>헤더 확인</button>
     </div>
   );
 };

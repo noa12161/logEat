@@ -44,6 +44,13 @@
 
 .header_user_info_container .username {
 }
+.header_user_info_container .username span {
+  color: var(--button-color);
+}
+.header_user_info_container .username .username_greeting {
+  font-size: 0.85rem;
+  color: var(--text-main);
+}
 .header_user_info_container .login {
 }
 
@@ -56,11 +63,23 @@
   transition: all 0.5s;
   border-radius: 10px;
 }
+/* 로그인, 회원가입 버튼 디자인 */
+.login_button_style {
+  background-color: var(--button-color);
+  color: var(--button-text-color);
+  border-radius: 5px;
+}
+.login_button_style:hover {
+  background-color: var(--button-hover-color);
+}
+.login_button_style a {
+  color: var(--button-text-color);
+}
 
 .example-custom-input:hover {
   /* font-size: 1.4rem;
   border: 1px solid var(--borderLine-color); */
-  background-color: rgb(215, 215, 255);
+  background-color: var(--listItem-color);
   transition: all 0.5s;
 }
 

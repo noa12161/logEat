@@ -1,8 +1,9 @@
 import Log from '../components/log/Log';
 import { useDispatch } from 'react-redux';
 import { applyUser } from '../redux/user/userSlice';
-import { useEffect, useState } from 'react';
-import axios from 'axios';
+import { useEffect } from 'react';
+import { setShowSearchFood } from '../redux/buttons/buttonSlice';
+import { addFoodToDbApi, deleteFoodApi } from '../lib/api/food';
 
 const LogContainer = ({
   user,
@@ -12,7 +13,6 @@ const LogContainer = ({
   totalNutrition2,
 }) => {
   const dispatch = useDispatch();
-  const [showSearch, setShowSearch] = useState(false);
 
   // 선택한 음식 삭제
   const handleDeleteFood = async (mealObj) => {
@@ -21,7 +21,7 @@ const LogContainer = ({
       date,
       mealObj,
     };
-    const res = await axios.post('/api/food/delete', objForRequest);
+    const res = await deleteFoodApi(objForRequest);
     localStorage.setItem('user', JSON.stringify(res.data));
     dispatch(applyUser(res.data));
   };
@@ -36,20 +36,15 @@ const LogContainer = ({
       date,
       mealObj,
     };
-    const res = await axios.post('/api/food/add', objForRequest);
+    const res = await addFoodToDbApi(objForRequest);
     localStorage.setItem('user', JSON.stringify(res.data));
     dispatch(applyUser(res.data));
   };
 
-  // 검색창 트리거 함수
-  const handleSearchDisplay = (triger) => {
-    if (triger) return setShowSearch(true);
-    setShowSearch(false);
-  };
-
   // 검색창 초기화
   useEffect(() => {
-    setShowSearch(false);
+    dispatch(setShowSearchFood(false));
+    // setShowSearch(false);
   }, [user, date, dispatch]);
 
   return (
@@ -60,8 +55,6 @@ const LogContainer = ({
       calculatedNutrition={calculatedNutrition2}
       handleAddToDb={handleAddToDb}
       handleDeleteFood={handleDeleteFood}
-      showSearch={showSearch}
-      handleSearchDisplay={handleSearchDisplay}
     />
   );
 };

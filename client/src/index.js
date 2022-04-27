@@ -1,5 +1,4 @@
 // V2 TEST !!!!
-
 import ReactDOM from 'react-dom';
 
 import './index.css';
@@ -39,14 +38,6 @@ ReactDOM.render(
 
 /*
   TO FIX....
-  검색된 음식의 용량을 전부 지우면 0으로 표시되고 다시 숫자를 쓰면 013... 이런식으로 표현됨
-  새로고침 하면 로컬스토리지에 있는 업데이트 되지 않은 유저를 리덕스에 적용시킴
-  타이핑을 할때마다 rerender 되고있음...
-  
-
-
-
-
 */
 
 /*

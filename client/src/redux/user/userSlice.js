@@ -3,7 +3,10 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   date: null,
   user: null,
-  registerSuccess: false,
+  register: {
+    status: false,
+    message: null,
+  },
 };
 
 const userSlice = createSlice({
@@ -20,13 +23,24 @@ const userSlice = createSlice({
       return {
         ...state,
         user: null,
-        registerSuccess: false,
       };
     },
-    register: (state) => {
+    registerSuccess: (state) => {
       return {
         ...state,
-        registerSuccess: !state.registerSuccess,
+        register: {
+          status: true,
+          message: null,
+        },
+      };
+    },
+    registerInit: (state) => {
+      return {
+        ...state,
+        register: {
+          status: false,
+          message: null,
+        },
       };
     },
     changeDate: (state, action) => {
@@ -46,7 +60,13 @@ const userSlice = createSlice({
 
 // export const selectAllPosts = (state) => state.posts;
 
-export const { login, logout, register, changeDate, applyUser } =
-  userSlice.actions;
+export const {
+  login,
+  logout,
+  registerSuccess,
+  registerInit,
+  changeDate,
+  applyUser,
+} = userSlice.actions;
 
 export default userSlice.reducer;

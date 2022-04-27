@@ -1,4 +1,4 @@
-import axios from 'axios';
+import './log.css';
 import {
   Add,
   Close,
@@ -6,13 +6,17 @@ import {
   Search,
 } from '@material-ui/icons';
 import React, { useState, useEffect } from 'react';
-import './log.css';
+// 컴포넌트
 import Pagination from './Pagination';
 import MyFoodItem from './MyFoodItem';
 import SearchedFoodItem from './SearchedFoodItem';
 // 리덕스
 import { useSelector, useDispatch } from 'react-redux';
-import { setShowSideChart } from '../../redux/buttons/buttonSlice';
+import {
+  setShowSearchFood,
+  setShowSideChart,
+} from '../../redux/buttons/buttonSlice';
+import { searchFoodApi } from '../../lib/api/food';
 
 const Log = ({
   user,
@@ -20,16 +24,17 @@ const Log = ({
   calculatedNutrition,
   handleAddToDb,
   handleDeleteFood,
-  showSearch,
-  handleSearchDisplay,
 }) => {
   const dispatch = useDispatch();
   const { windowWidth } = useSelector((state) => state.window);
+  const { showSearchFood } = useSelector((state) => state.buttons);
+
   const [nameOfFood, setNameOfFood] = useState('');
   const [searchedFoodArray, setSearchedFoodArray] = useState([]);
+
+  //FOR PAGINATION
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
-
   const indexOfLastPost = currentPage * itemsPerPage;
   const indexOfFirstPost = indexOfLastPost - itemsPerPage;
   //posts.slice(0, 10) = 0번 인덱스부터 9번 인덱스까지 잘라서 새로운 배열 반환
@@ -46,13 +51,11 @@ const Log = ({
     e.preventDefault();
     if (nameOfFood === '') return;
     setCurrentPage(1);
-    const foodData = await axios.post('/api/searchFood/search', {
-      nameOfFood,
-    });
+    const foodData = await searchFoodApi(nameOfFood);
     if (foodData.data === 'noData')
       return alert('데이터베이스에 없는 음식입니다...');
-    setSearchedFoodArray(foodData.data);
 
+    setSearchedFoodArray(foodData.data);
     setNameOfFood('');
   };
 
@@ -83,8 +86,8 @@ const Log = ({
 
   // 검색창 닫을시 검색했던 데이터 초기화
   useEffect(() => {
-    if (!showSearch) return setSearchedFoodArray([]);
-  }, [showSearch]);
+    if (!showSearchFood) return setSearchedFoodArray([]);
+  }, [showSearchFood]);
 
   // 사이드 차트 토글 버튼
   const handleSideChartToggle = (bool) => {
@@ -111,7 +114,7 @@ const Log = ({
               {/* 추가버튼 + 총 영양성분 */}
               <div className="log_contents_down_myList_addandTotal">
                 <div
-                  onClick={() => handleSearchDisplay(true)}
+                  onClick={() => dispatch(setShowSearchFood(true))}
                   className="log_contents_down_myList_add jcac"
                 >
                   <Add style={{ fill: '#068b2e' }} />
@@ -168,7 +171,7 @@ const Log = ({
               </ul>
             </div>
             {/* 검색창 영역 */}
-            {showSearch && (
+            {showSearchFood && (
               <div className="log_contents_down_food_search_container">
                 {/* 검색 input + 버튼 */}
                 <form className="log_contents_down_food_search">
@@ -189,7 +192,7 @@ const Log = ({
                       right: currentPosts.length > 0 ? '10px' : '-29px',
                       cursor: 'pointer',
                     }}
-                    onClick={() => handleSearchDisplay(false)}
+                    onClick={() => dispatch(setShowSearchFood(false))}
                   />
                 </form>
                 {/* 검색한 음식 리스트 */}

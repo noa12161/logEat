@@ -10,6 +10,7 @@
   --button-hover-color: rgb(243, 117, 117);
   --progressBar-color: #e8d0d7;
   --pane-padding: 5px 42px;
+  --box-shadow: 4px 6px 7px 0px rgb(0 0 0 / 22%);
 }
 
 body {

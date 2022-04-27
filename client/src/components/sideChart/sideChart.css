@@ -116,7 +116,7 @@
   justify-content: center;
   align-items: center;
   border-radius: 5px;
-  box-shadow: 4px 6px 7px 0px rgb(0 0 0 / 22%);
+  box-shadow: var(--box-shadow);
 }
 .editor_contents {
   margin-top: 10px;
