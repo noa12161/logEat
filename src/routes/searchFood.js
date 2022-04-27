@@ -27,7 +27,7 @@ router.post("/search", async (req, res) => {
     },
   });
   if (responseFromApi.data.body.totalCount === 0) {
-    return res.send("noData");
+    return res.status(404).send("noData");
   }
   const foodData = responseFromApi.data.body.items.map((item) => ({
     id: item.DESC_KOR + item.ANIMAL_PLANT + item.BGN_YEAR,

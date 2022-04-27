@@ -16,7 +16,8 @@ import {
   setShowSearchFood,
   setShowSideChart,
 } from '../../redux/buttons/buttonSlice';
-import { searchFoodApi } from '../../lib/api/food';
+import { searchFood } from '../../redux/foods/foodSlice';
+import MyTotalNtr from './MyTotalNtr';
 
 const Log = ({
   user,
@@ -28,6 +29,7 @@ const Log = ({
   const dispatch = useDispatch();
   const { windowWidth } = useSelector((state) => state.window);
   const { showSearchFood } = useSelector((state) => state.buttons);
+  const { searchedFood } = useSelector((state) => state.food);
 
   const [nameOfFood, setNameOfFood] = useState('');
   const [searchedFoodArray, setSearchedFoodArray] = useState([]);
@@ -43,19 +45,19 @@ const Log = ({
     indexOfLastPost,
   );
 
-  const paginate = (number) => {
-    setCurrentPage(number);
-  };
+  useEffect(() => {
+    if (searchedFood.data === null) {
+      return setSearchedFoodArray([]);
+    }
+    setSearchedFoodArray(searchedFood.data);
+  }, [searchedFood.data]);
+
   // 음식 검색 버튼 핸들러
   const handleSearchButton = async (e) => {
     e.preventDefault();
     if (nameOfFood === '') return;
     setCurrentPage(1);
-    const foodData = await searchFoodApi(nameOfFood);
-    if (foodData.data === 'noData')
-      return alert('데이터베이스에 없는 음식입니다...');
-
-    setSearchedFoodArray(foodData.data);
+    dispatch(searchFood(nameOfFood));
     setNameOfFood('');
   };
 
@@ -95,6 +97,11 @@ const Log = ({
     dispatch(setShowSideChart(bool));
   };
 
+  // 검색결과 페이지 핸들러
+  const paginate = (number) => {
+    setCurrentPage(number);
+  };
+
   return (
     <div className="Log">
       <div className="log_wrapper">
@@ -120,42 +127,10 @@ const Log = ({
                   <Add style={{ fill: '#068b2e' }} />
                   <span style={{ color: '#068b2e' }}>추가하기</span>
                 </div>
-                <div className="log_contents_down_myList_totalNutrition jcac">
-                  <div>
-                    <span>열량</span>
-                    <span>
-                      <strong>
-                        {currentDateTotalNutrition
-                          ? currentDateTotalNutrition.cal
-                          : 0}
-                      </strong>
-                    </span>
-                  </div>
-                  <div>
-                    <span>탄수화물</span>
-                    <span>
-                      {currentDateTotalNutrition
-                        ? currentDateTotalNutrition.carb
-                        : 0}
-                    </span>
-                  </div>
-                  <div>
-                    <span>단백질</span>
-                    <span>
-                      {currentDateTotalNutrition
-                        ? currentDateTotalNutrition.protein
-                        : 0}
-                    </span>
-                  </div>
-                  <div>
-                    <span>지방</span>
-                    <span>
-                      {currentDateTotalNutrition
-                        ? currentDateTotalNutrition.fat
-                        : 0}
-                    </span>
-                  </div>
-                </div>
+                {/* 먹은 음식 영양성분 총합 */}
+                <MyTotalNtr
+                  currentDateTotalNutrition={currentDateTotalNutrition}
+                />
               </div>
               {/* 먹은 음식 리스트 */}
               <ul className="log_contents_down_myList_foodLists">
@@ -192,11 +167,14 @@ const Log = ({
                       right: currentPosts.length > 0 ? '10px' : '-29px',
                       cursor: 'pointer',
                     }}
-                    onClick={() => dispatch(setShowSearchFood(false))}
+                    onClick={() => {
+                      setNameOfFood('');
+                      dispatch(setShowSearchFood(false));
+                    }}
                   />
                 </form>
                 {/* 검색한 음식 리스트 */}
-                {currentPosts.length > 0 && (
+                {currentPosts.length > 0 && !searchedFood.isLoading ? (
                   <ul className="log_contents_down_food_searched_data_lists">
                     {/* 영양성분 안내칸 */}
                     <div className="food_searched_foodList_information">
@@ -225,6 +203,10 @@ const Log = ({
                       currentPage={currentPage}
                     />
                   </ul>
+                ) : !searchedFood.isLoading ? (
+                  <div></div>
+                ) : (
+                  <div>loading...</div>
                 )}
               </div>
             )}

@@ -1,11 +1,7 @@
 import './header.css';
 import React, { useState, useEffect, useRef, forwardRef } from 'react';
-import { BsCalendar3Event } from 'react-icons/bs';
 import axios from 'axios';
-import {
-  getArrayOfMonthCaloriesIntake,
-  configDaysinMonth,
-} from '../../lib/functions/dateFunctions';
+import { configDaysinMonth } from '../../lib/functions/dateFunctions';
 
 // date-picker
 import DatePicker from 'react-datepicker';
@@ -14,17 +10,33 @@ import { ko } from 'date-fns/esm/locale';
 import { Link } from 'react-router-dom';
 // 리덕스
 import { useSelector, useDispatch } from 'react-redux';
-import { logout, changeDate } from '../../redux/user/userSlice';
+import { logout, changeDate, setPrevUser } from '../../redux/user/userSlice';
 import {
-  setMonthCaloriesIntakeStart,
-  setMonthCaloriesIntake,
   initializeFoodSlice,
+  fnMonthCalIntake,
+  initializeCurrentDateNutrition,
+  setCalculatedNutrition,
+  setFoodList,
+  setTotalNutrition,
 } from '../../redux/foods/foodSlice';
+import {
+  getTotalNutrition,
+  getSumOfNutrition,
+} from '../../lib/functions/calculate';
 
 const Header = ({ user }) => {
   const dispatch = useDispatch();
   const { monthCaloriesIntake } = useSelector((state) => state.food);
-  const [prevUserState, setPrevUserState] = useState(user);
+  const { prevUser } = useSelector((state) => state.user);
+  const { date, foodList, currentDateNutrition } = useSelector(
+    ({ user, food }) => {
+      return {
+        date: user.date,
+        foodList: food.foodList,
+        currentDateNutrition: food.currentDateNutrition,
+      };
+    },
+  );
 
   //date picker
   const dateRef = useRef();
@@ -44,40 +56,77 @@ const Header = ({ user }) => {
   };
 
   useEffect(() => {
-    if (!user) return dispatch(initializeFoodSlice());
-
+    // 로그인 했을시...
+    // 오늘 날짜 설정
     dispatch(changeDate(startDate.toLocaleDateString()));
-    //한달간 일일 열량섭취 값 구하기...
+  }, [dispatch, startDate]);
+
+  // user 정보가 변할때마다 foodList 갱신...
+  useEffect(() => {
+    if (!date) return;
+    if (!user) return dispatch(setFoodList(null));
+
+    // date picker로 선택한 날짜와 같은 객체 찾기...
+    const foodLists = user.foodData.find((d) => d.date === date)?.meals;
+    console.log(foodLists);
+    //없으면..
+    if (!foodLists) return dispatch(setFoodList(null));
+    //있으면..
+    dispatch(setFoodList(foodLists));
+  }, [user, date, dispatch]);
+
+  // currentDateNutrion.calculatedNutriotion
+  // 기존 음식데이터의 객체배열을 용량단위, 용량을 기준으로 총 열량,탄수,단백,지방 계산...(객체배열 반환)
+  useEffect(() => {
+    if (!foodList) {
+      dispatch(initializeCurrentDateNutrition());
+      return;
+    }
+    console.log('has foodList');
+    const sumOfNutrition = getSumOfNutrition(foodList);
+    dispatch(setCalculatedNutrition(sumOfNutrition));
+  }, [foodList, dispatch]);
+
+  // currentDateNutrion.totalNutrition
+  // 해당 날짜의 총 영양성분을 리덕스에 저장
+  useEffect(() => {
+    if (currentDateNutrition.calculatedNutrition.length === 0) {
+      dispatch(setTotalNutrition(null));
+      return;
+    }
+    const totalNutrition = getTotalNutrition(
+      currentDateNutrition.calculatedNutrition,
+    );
+    dispatch(setTotalNutrition(totalNutrition));
+  }, [currentDateNutrition.calculatedNutrition, dispatch]);
+
+  // 첫 렌더링시 prevUser 설정
+  useEffect(() => {
+    if (!user) return;
+    dispatch(setPrevUser(user));
+  }, []);
+
+  useEffect(() => {
+    // !user || logout 하면..
+    if (!user) return dispatch(initializeFoodSlice());
+    if (monthCaloriesIntake.isFetching && user === prevUser) return;
+    // 선택한 날짜의 해당 month 날짜별 열량 구하기..
     const fn = async () => {
       // 같은달을 이미 계산 했고..
       // user의 정보가 변경되지 않았다면..return
       // eg) 유저가 음식을 추가하면 다시 계산함... month 단위가 변하면 다시 계산...
       if (
         startDate.getMonth() + 1 === monthCaloriesIntake.currentMonth &&
-        user === prevUserState
+        user === prevUser
       )
         return;
-
-      dispatch(setMonthCaloriesIntakeStart()); //thunk 로 대체..
-      /* data =
-      {
-        fullDate: dateString, //"2022. 4. 1."
-        date: i,  // 1,2,3,4,5......
-        cal: convertToFixedNum(cal), // 2000
-      } 이와 같은 객체들로 이루어진 배열 length = 선택 month의 days...
-      */
-      const data = await getArrayOfMonthCaloriesIntake(
-        configDaysinMonth(startDate),
-        startDate,
+      const formForMonthCalories = {
+        daysInMonth: configDaysinMonth(startDate),
+        fullDate: startDate,
         user,
-      );
-      dispatch(
-        setMonthCaloriesIntake({
-          data,
-          currentMonth: startDate.getMonth() + 1,
-        }),
-      );
-      setPrevUserState(user);
+        currentMonth: startDate.getMonth() + 1,
+      };
+      dispatch(fnMonthCalIntake(formForMonthCalories));
     };
     fn();
   }, [
@@ -85,7 +134,8 @@ const Header = ({ user }) => {
     dispatch,
     monthCaloriesIntake.currentMonth,
     user,
-    prevUserState,
+    prevUser,
+    monthCaloriesIntake.isFetching,
   ]);
 
   return (
@@ -143,52 +193,3 @@ const Header = ({ user }) => {
 };
 
 export default Header;
-
-// const [today, setToday] = useState(startDate.toLocaleDateString());
-// const [todaymeals, settodaymeals] = useState([]);
-
-// <div>
-//      {todaymeals && todaymeals.map((meal) => <div>{meal.foodname}</div>)}
-// </div>
-// useEffect(() => {
-//   console.log(today === '2022. 4. 1.');
-//   setToday(startDate.toLocaleDateString());
-// }, [startDate]);
-
-// const userData = {
-//   name: 'david',
-//   foodData: [
-//     {
-//       date: '2022. 4. 2.',
-//       meals: [
-//         {
-//           foodname: 'apple',
-//           cal: 60,
-//         },
-//         {
-//           foodname: 'banana',
-//           cal: 60,
-//         },
-//       ],
-//     },
-//     {
-//       date: '2022. 4. 3.',
-//       meals: [
-//         {
-//           foodname: 'chicken',
-//           cal: 60,
-//         },
-//         {
-//           foodname: 'rice',
-//           cal: 60,
-//         },
-//       ],
-//     },
-//   ],
-// };
-// useEffect(() => {
-//   const currentMeals = userData.foodData.find((d) => d.date === today)?.meals;
-//   console.log(currentMeals);
-//   if (currentMeals === undefined) settodaymeals([]);
-//   settodaymeals(currentMeals);
-// }, [today]);

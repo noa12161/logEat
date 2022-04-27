@@ -28,7 +28,6 @@ const SideChart = ({
   const dispatch = useDispatch();
   const { windowWidth } = useSelector((state) => state.window);
   const { showSideChart } = useSelector((state) => state.buttons);
-  console.log(windowWidth);
   const [nutritionRatio, setNutritionRatio] = useState({
     carb: 5,
     protein: 3,

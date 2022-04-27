@@ -9,22 +9,12 @@ import NotFound from './NotFound';
 
 import { Routes, Route } from 'react-router-dom';
 // 함수들...
-import {
-  getTotalNutrition,
-  getSumOfNutrition,
-} from '../lib/functions/calculate';
 import { changeToStringFormat } from '../lib/functions/common';
 import { changeBodyWeightApi, changeCaloriesApi } from '../lib/api/user';
 // 리덕스...
 import { useSelector, useDispatch } from 'react-redux';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { applyUser } from '../redux/user/userSlice';
-import {
-  initializeCurrentDateNutrition,
-  setCalculatedNutrition,
-  setFoodList,
-  setTotalNutrition,
-} from '../redux/foods/foodSlice';
 import { initSideChartEditor } from '../redux/buttons/buttonSlice';
 
 const HomePage = () => {
@@ -44,45 +34,6 @@ const HomePage = () => {
       sideChartEdditorHandler: buttons.sideChartEdditorHandler,
     };
   });
-
-  // user 정보가 변할때마다 foodList 갱신...
-  useEffect(() => {
-    if (user) {
-      // date picker로 선택한 날짜와 같은 객체 찾기...
-      const foodLists = user.foodData.find((d) => d.date === date)?.meals;
-      //없으면..
-      if (!foodLists) return dispatch(setFoodList(null));
-      //있으면..
-      dispatch(setFoodList(foodLists));
-      return;
-    }
-    dispatch(setFoodList(null));
-  }, [user, date, dispatch]);
-
-  // currentDateNutrion.calculatedNutriotion
-  // 기존 음식데이터의 객체배열을 용량단위, 용량을 기준으로 총 열량,탄수,단백,지방 계산...(객체배열 반환)
-  useEffect(() => {
-    if (!foodList) {
-      dispatch(initializeCurrentDateNutrition());
-      return;
-    }
-    console.log('has foodList');
-    const sumOfNutrition = getSumOfNutrition(foodList);
-    dispatch(setCalculatedNutrition(sumOfNutrition));
-  }, [foodList, dispatch]);
-
-  // currentDateNutrion.totalNutrition
-  // 해당 날짜의 총 영양성분을 리덕스에 저장
-  useEffect(() => {
-    if (currentDateNutrition.calculatedNutrition.length === 0) {
-      dispatch(setTotalNutrition(null));
-      return;
-    }
-    const totalNutrition = getTotalNutrition(
-      currentDateNutrition.calculatedNutrition,
-    );
-    dispatch(setTotalNutrition(totalNutrition));
-  }, [currentDateNutrition.calculatedNutrition, dispatch]);
 
   const [userState, setUserState] = useState({
     weight: '',

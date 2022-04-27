@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   date: null,
   user: null,
+  prevUser: null,
   register: {
     status: false,
     message: null,
@@ -55,6 +56,12 @@ const userSlice = createSlice({
         user: action.payload,
       };
     },
+    setPrevUser: (state, action) => {
+      return {
+        ...state,
+        prevUser: action.payload,
+      };
+    },
   },
 });
 
@@ -67,6 +74,7 @@ export const {
   registerInit,
   changeDate,
   applyUser,
+  setPrevUser,
 } = userSlice.actions;
 
 export default userSlice.reducer;

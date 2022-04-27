@@ -18,17 +18,17 @@ const convertToFixedNum = (num) => {
 };
 
 // 전달받은 days만큼 요청해서 응답값을 배열에 push 한다음 배열을 return 하는 함수
-export const getArrayOfMonthCaloriesIntake = async (days, fullDate, user) => {
+export const getArrayOfMonthCaloriesIntake = async (form) => {
   const ArrayOfMonthCaloriesIntake = [];
-  for (let i = 1; i <= days; i++) {
-    const year = fullDate.getFullYear();
-    const month = fullDate.getMonth() + 1;
+  for (let i = 1; i <= form.daysInMonth; i++) {
+    const year = form.fullDate.getFullYear();
+    const month = form.fullDate.getMonth() + 1;
     const date = i;
     let cal = 0;
     const dateString = year + '. ' + month + '. ' + date + '.';
     // console.log(dateString);
     const res = await axios.post('/api/food/getByDate', {
-      username: user.username,
+      username: form.user.username,
       date: dateString,
     });
     const foodList =
@@ -39,7 +39,7 @@ export const getArrayOfMonthCaloriesIntake = async (days, fullDate, user) => {
       ArrayOfMonthCaloriesIntake.push({
         fullDate: dateString,
         date: i,
-        cal: user.currentTargetCalories,
+        cal: form.user.currentTargetCalories,
       });
       continue;
     }
@@ -61,6 +61,5 @@ export const getArrayOfMonthCaloriesIntake = async (days, fullDate, user) => {
       cal: convertToFixedNum(cal),
     });
   }
-
   return ArrayOfMonthCaloriesIntake;
 };
