@@ -68,7 +68,6 @@ const Header = ({ user }) => {
 
     // date picker로 선택한 날짜와 같은 객체 찾기...
     const foodLists = user.foodData.find((d) => d.date === date)?.meals;
-    console.log(foodLists);
     //없으면..
     if (!foodLists) return dispatch(setFoodList(null));
     //있으면..
@@ -82,7 +81,6 @@ const Header = ({ user }) => {
       dispatch(initializeCurrentDateNutrition());
       return;
     }
-    console.log('has foodList');
     const sumOfNutrition = getSumOfNutrition(foodList);
     dispatch(setCalculatedNutrition(sumOfNutrition));
   }, [foodList, dispatch]);

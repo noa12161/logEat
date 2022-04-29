@@ -1,0 +1,71 @@
+.postLists_container {
+  padding: 1rem 2rem;
+}
+.postItem_container {
+  padding: 1rem;
+  box-shadow: var(--box-shadow);
+  border: 1px solid var(--listItem-color);
+  margin-bottom: 1rem;
+}
+.postItem_Title_container {
+  padding: 0.6rem 0;
+}
+.postItem_Title_container h2 {
+  cursor: pointer;
+  display: inline;
+}
+
+.postItem_subTitle_container {
+  display: flex;
+  border-bottom: solid 1px var(--listItem-color);
+  /* width: 100%; */
+}
+.postItem_subTitle_username {
+  color: var(--borderLine-color);
+  cursor: pointer;
+  padding-right: 1rem;
+}
+.postItem_subTitle_timeStamp {
+  color: var(--borderLine-color);
+  font-size: 0.8rem;
+  align-self: center;
+}
+.postItem_body_container {
+  padding: 1rem 0;
+}
+.postItem_body_image {
+  display: flex;
+  justify-content: center;
+  padding: 1rem 0;
+}
+.postItem_body_image img {
+  width: 300px;
+  height: 300px;
+  object-fit: contain;
+}
+.postItem_body_message {
+}
+.postItem_tag_container {
+}
+.postItem_tag_container span {
+  margin-right: 1rem;
+  color: var(--button-color);
+  cursor: pointer;
+}
+
+/* WritePost 컴포넌트 */
+.writePost_container {
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: flex-end;
+}
+.writeButton {
+  /* width: 80px; */
+  background-color: var(--listItem-color);
+  border-radius: 5px;
+  text-align: center;
+  padding: 0.3rem 1rem;
+  cursor: pointer;
+  box-shadow: var(--box-shadow);
+  color: var(--text-sub);
+}

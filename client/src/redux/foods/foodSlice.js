@@ -50,7 +50,6 @@ export const fnMonthCalIntake = createAsyncThunk(
     dispatch(setPrevUser(user));
     try {
       const response = await getArrayOfMonthCaloriesIntake(form);
-      console.log(response);
       return { response, currentMonth: form.currentMonth };
     } catch (e) {
       return rejectWithValue(e);

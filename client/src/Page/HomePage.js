@@ -4,7 +4,6 @@ import Header from '../components/header/Header';
 import LogContainer from '../container/LogContainer';
 import SideChart from '../components/sideChart/SideChart';
 import ChartContainer from '../container/ChartContainer';
-import SocialContainer from '../container/SocialContainer';
 import NotFound from './NotFound';
 
 import { Routes, Route } from 'react-router-dom';
@@ -16,6 +15,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useState } from 'react';
 import { applyUser } from '../redux/user/userSlice';
 import { initSideChartEditor } from '../redux/buttons/buttonSlice';
+import PostPage from './PostPage';
 
 const HomePage = () => {
   const dispatch = useDispatch();
@@ -114,10 +114,8 @@ const HomePage = () => {
               />
             }
           />
-          {/* 대부분 디스플레이만 하는 컴포넌트... */}
           <Route path="/chart" element={<ChartContainer user={user} />} />
-          {/* 게시판 컴포넌트... */}
-          <Route path="/social/*" element={<SocialContainer />} />
+          <Route path="/posts/*" element={<PostPage />} />
           <Route path="/*" element={<NotFound />} />
         </Routes>
       </div>

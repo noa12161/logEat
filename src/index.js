@@ -16,6 +16,8 @@ import authRoutes from "./routes/auth.js";
 import foodRoutes from "./routes/food.js";
 import searchRoutes from "./routes/searchFood.js";
 import userRouter from "./routes/user.js";
+import postsRouter from "./routes/posts/index.js";
+import verifyJwt from "./middleWare/verifyJwt.js";
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -27,6 +29,7 @@ mongoose
 app.use(cookieParser());
 app.use(cors());
 app.use(express.json());
+app.use(verifyJwt);
 
 // app.use("/", (req, res) => {
 //   res.json({ username: "유저 명" });
@@ -35,6 +38,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/food", foodRoutes);
 app.use("/api/searchFood", searchRoutes);
 app.use("/api/user", userRouter);
+app.use("/api/posts", postsRouter);
 
 app.use(express.static(path.join(__dirname, "../client/build")));
 

@@ -76,6 +76,7 @@ UserSchema.methods.generateToken = function () {
   const token = jwt.sign(
     {
       _id: this._id,
+      username: this.username,
       role: this.role,
     },
     process.env.JWT_SEC, // 두번째 파라미터에는 JWT 암호를 넣습니다.

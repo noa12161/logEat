@@ -20,7 +20,7 @@ const SideBar = () => {
         <Link to="/chart">
           <div>그래프</div>
         </Link>
-        <Link to="/social">
+        <Link to="/posts">
           <div>게시글</div>
         </Link>
       </div>

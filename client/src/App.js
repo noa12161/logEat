@@ -3,7 +3,6 @@ import './App.css';
 import HomePage from './Page/HomePage';
 import LoginPage from './Page/LoginPage';
 import RegisterPage from './Page/RegisterPage';
-import NotFound from './Page/NotFound';
 // 리덕스
 import { useDispatch } from 'react-redux';
 import { setWindowWidth } from './redux/window/windowSlice.js';
@@ -29,7 +28,7 @@ function App() {
         <Route path="/*" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-        <Route path="*" element={<NotFound />} />
+        {/* <Route path="*" element={<NotFound />} /> */}
       </Routes>
     </div>
   );
