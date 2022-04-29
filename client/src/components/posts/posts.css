@@ -69,3 +69,20 @@
   box-shadow: var(--box-shadow);
   color: var(--text-sub);
 }
+
+/* 페이지네이션 */
+.pagination_wrapper {
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.pagination_wrapper button {
+}
+.pagination_num {
+  padding: 0.5rem;
+}
+.pagination_num:hover {
+  background-color: var(--listItem-color);
+  cursor: pointer;
+}

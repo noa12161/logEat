@@ -1,7 +1,14 @@
-import Pagination from '../components/posts/Pagination';
 import WritePost from '../components/posts/WritePost';
 import PostLists from '../components/posts/PostLists';
-import { fakePosts } from './FakePosts';
+import PaginationContainer from './PaginationContainer';
+
+import { useLocation, useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import qs from 'qs';
+
+// 리덕스
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllPosts } from '../redux/posts/postsSlice';
 
 /*
   첫 렌더링시 모든 포스트 조회
@@ -12,22 +19,23 @@ import { fakePosts } from './FakePosts';
 */
 
 const PostListContainer = () => {
-  console.log(fakePosts);
+  const dispatch = useDispatch();
+  const { posts, isLoading, lastPage } = useSelector((state) => state.posts);
+  const location = useLocation();
 
-  /*
-    useEffect로 전체 포스트 redux-Thunk로 요청
-    --thunk 로직--
-      export const fn({query}) {
-        rerturn const posts = axios.get(url, query)
-      }
-      성공시 state.posts = posts
-  */
+  const { search } = location;
+  const query = qs.parse(search, { ignoreQueryPrefix: true });
+  const queryString = qs.stringify(query);
+
+  useEffect(() => {
+    dispatch(getAllPosts(queryString));
+  }, [search, dispatch, queryString]);
 
   return (
     <div>
       <WritePost />
-      <PostLists posts={fakePosts} />
-      <Pagination />
+      {isLoading ? <div>Loading....</div> : <PostLists posts={posts} />}
+      <PaginationContainer query={query} lastPage={lastPage} />
     </div>
   );
 };

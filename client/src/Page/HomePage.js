@@ -6,7 +6,7 @@ import SideChart from '../components/sideChart/SideChart';
 import ChartContainer from '../container/ChartContainer';
 import NotFound from './NotFound';
 
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useParams, Outlet } from 'react-router-dom';
 // 함수들...
 import { changeToStringFormat } from '../lib/functions/common';
 import { changeBodyWeightApi, changeCaloriesApi } from '../lib/api/user';
@@ -16,8 +16,11 @@ import { useState } from 'react';
 import { applyUser } from '../redux/user/userSlice';
 import { initSideChartEditor } from '../redux/buttons/buttonSlice';
 import PostPage from './PostPage';
+import PostContainer from '../container/PostContainer';
+import { useEffect } from 'react';
 
 const HomePage = () => {
+  const params = useParams();
   const dispatch = useDispatch();
   const {
     user,
@@ -40,6 +43,10 @@ const HomePage = () => {
     calories: '',
     ratio: {},
   });
+
+  // useEffect(() => {
+  //   console.log(params);
+  // }, [params]);
 
   // 사용자 정보 editor value 변경 함수
   const handleUserStateValue = (e) => {
@@ -103,7 +110,7 @@ const HomePage = () => {
         <Routes>
           {/* 주요 기능 실행 컴포넌트...(음식 검색, 음식 기록 등등...) */}
           <Route
-            path="/"
+            index
             element={
               <LogContainer
                 user={user}
@@ -114,9 +121,9 @@ const HomePage = () => {
               />
             }
           />
-          <Route path="/chart" element={<ChartContainer user={user} />} />
-          <Route path="/posts/*" element={<PostPage />} />
-          <Route path="/*" element={<NotFound />} />
+          <Route path="chart" element={<ChartContainer user={user} />} />
+          <Route path="posts/*" element={<PostPage />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
       {user && (

@@ -1,0 +1,19 @@
+.updateDelete_container {
+  display: flex;
+  justify-content: flex-end;
+}
+.updateDelete_container > div {
+  padding: 0.2rem 0.5rem;
+  border-radius: 5px;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+.updateDelete_update {
+  background-color: green;
+  color: white;
+}
+.updateDelete_delete {
+  margin-left: 10px;
+  background-color: red;
+  color: white;
+}

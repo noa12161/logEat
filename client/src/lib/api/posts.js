@@ -1,25 +1,32 @@
 import axios from 'axios';
 // 전체 포스트 조회
-export const getAllPosts = async () => {
-  return await axios.get('/api/posts');
+export const getAllPostsApi = async (queryString) => {
+  console.log(queryString);
+  const url = queryString ? `/api/posts?${queryString}` : `/api/posts`;
+  return await axios.get(url);
 };
 
 // 특정 포스트 조회
-export const getPost = async (id) => {
-  return await axios.get(`/api/posts/${id}`);
+export const getPostApi = async (postId) => {
+  return await axios.get(`/api/posts/${postId}`);
 };
-
+/*{
+  title
+  message
+  image
+  tags
+} */
 // 포스트 생성
-export const createPost = async () => {
-  return await axios.post(`/api/posts`);
+export const createPostApi = async (form) => {
+  return await axios.post(`/api/posts`, form);
 };
 
 // 포스트 삭제
-export const deletePost = async (id) => {
+export const deletePostApi = async (id) => {
   return await axios.delete(`/api/posts/${id}`);
 };
 
 //포스트 수정
-export const updatePost = async (id) => {
+export const updatePostApi = async (id) => {
   return await axios.put(`/api/posts/${id}`);
 };

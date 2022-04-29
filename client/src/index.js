@@ -9,6 +9,15 @@ import { store } from './redux/store.js';
 import { Provider } from 'react-redux';
 import { login } from './redux/user/userSlice';
 
+// import qs from 'qs';
+// const search = window.location.search;
+// const query = qs.parse(search, { ignoreQueryPrefix: true });
+// console.log(query);
+// const { username, tags, page } = query;
+// console.log(username, tags, page);
+// const queryString = qs.stringify(query);
+// console.log(queryString);
+
 //로그인 후 페이지 새로고침 해도 로그인 유지하게 해주는 fn()
 const loaderUser = async () => {
   try {

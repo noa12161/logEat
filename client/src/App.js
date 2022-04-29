@@ -7,9 +7,12 @@ import RegisterPage from './Page/RegisterPage';
 import { useDispatch } from 'react-redux';
 import { setWindowWidth } from './redux/window/windowSlice.js';
 import { useEffect } from 'react';
+import ChartContainer from './container/ChartContainer';
+import PostPage from './Page/PostPage';
 
 function App() {
   const dispatch = useDispatch();
+  console.log('app!!!!');
 
   useEffect(() => {
     updateDimensions();
