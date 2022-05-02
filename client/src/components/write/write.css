@@ -1,0 +1,33 @@
+/* editor */
+.quill_container {
+  /* height: 400px; */
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.editor_container > input {
+  font-weight: bold;
+  font-size: 1.3rem;
+  padding: 0.5rem 1rem;
+  width: 100%;
+  border: none;
+  background-color: var(--listItem-color);
+}
+.quill_container > div {
+  width: 100%;
+}
+.ql-toolbar.ql-snow {
+  background-color: var(--listItem-color);
+}
+.ql-editor {
+  /* padding: 0; */
+  min-height: 320px;
+  font-size: 1rem;
+  line-height: 1.5;
+  background-color: var(--listItem-color);
+}
+/* .ql-editor.ql-blank::before {
+  left: 0px;
+} */

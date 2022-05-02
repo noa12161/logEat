@@ -4,9 +4,7 @@ import { initWrite, setValue } from '../../redux/post/writeSlice';
 
 const WritePost = () => {
   const dispatch = useDispatch();
-  const { title, message, image, tags, isUpdate } = useSelector(
-    (state) => state.write,
-  );
+  const { title, message, image, tags } = useSelector((state) => state.write);
 
   const onchange = (e) => {
     const name = e.target.name;

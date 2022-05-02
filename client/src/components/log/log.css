@@ -221,10 +221,6 @@ button {
   align-items: center;
 }
 
-.pagination_number:hover {
-  background-color: rgb(163, 182, 248);
-}
-
 /* TOGGLE BUTTON */
 .sideChart_toggle_button {
   width: fit-content;

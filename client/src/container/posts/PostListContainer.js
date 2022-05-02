@@ -1,14 +1,14 @@
-import WritePost from '../components/posts/WritePost';
-import PostLists from '../components/posts/PostLists';
+import WritePost from '../../components/posts/WritePost';
+import PostLists from '../../components/posts/PostLists';
 import PaginationContainer from './PaginationContainer';
 
-import { useLocation, useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
 import qs from 'qs';
 
 // 리덕스
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllPosts } from '../redux/posts/postsSlice';
+import { getAllPosts } from '../../redux/posts/postsSlice';
 
 /*
   첫 렌더링시 모든 포스트 조회

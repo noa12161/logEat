@@ -28,7 +28,11 @@ mongoose
 
 app.use(cookieParser());
 app.use(cors());
-app.use(express.json());
+app.use(
+  express.json({
+    limit: "10mb",
+  })
+);
 app.use(verifyJwt);
 
 // app.use("/", (req, res) => {

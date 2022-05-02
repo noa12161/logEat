@@ -8,7 +8,6 @@ const UpdateDelete = ({ post }) => {
   const dispatch = useDispatch();
 
   const onClickEdit = () => {
-    dispatch(setToUpdate());
     dispatch(setPost(post));
     navigate(`/posts/write`);
   };

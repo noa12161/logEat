@@ -27,6 +27,6 @@ export const deletePostApi = async (id) => {
 };
 
 //포스트 수정
-export const updatePostApi = async (id) => {
-  return await axios.put(`/api/posts/${id}`);
+export const updatePostApi = async (form, postId) => {
+  return await axios.put(`/api/posts/${postId}`, form);
 };

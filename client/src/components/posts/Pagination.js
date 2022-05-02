@@ -1,46 +1,41 @@
 import './posts.css';
-import { useNavigate } from 'react-router-dom';
-import qs from 'qs';
-
-const Pagination = ({ username, tag, page, lastPage }) => {
-  const navigate = useNavigate();
-
-  const buildLink = (query) => {
-    const queryString = qs.stringify(query);
-    navigate(`?${queryString}`);
-  };
-
-  const showPaginateNum = () => {
-    const nums = [];
-    for (let i = 1; i <= lastPage; i++) {
-      nums.push(
-        <div
-          className="pagination_num"
-          onClick={() => buildLink({ username, tag, page: i })}
-        >
-          {i}
-        </div>,
-      );
-    }
-    return nums;
-  };
-
+const Pagination = ({
+  pageNumbers,
+  page,
+  lastPage,
+  paginate,
+  onClickArrow,
+}) => {
+  console.log(typeof page);
   return (
-    <div className="pagination_wrapper">
+    <ul className="pagination_container jcac">
       <button
+        className="pagination_button"
+        onClick={() => onClickArrow(parseInt(page) - 1)}
         disabled={page <= 1}
-        onClick={() => buildLink({ username, tag, page: page - 1 })}
       >
         이전
       </button>
-      {showPaginateNum()}
+      {pageNumbers.map((pageNum, i) => (
+        <li
+          onClick={() => paginate(pageNum)}
+          className="pagination_number jcac"
+          style={{
+            fontWeight: parseInt(page) === pageNum ? 'bold' : 'normal',
+          }}
+          key={i}
+        >
+          {pageNum}
+        </li>
+      ))}
       <button
+        className="pagination_button"
+        onClick={() => onClickArrow(parseInt(page) + 1)}
         disabled={page >= lastPage}
-        onClick={() => buildLink({ username, tag, page: page + 1 })}
       >
         다음
       </button>
-    </div>
+    </ul>
   );
 };
 

@@ -52,7 +52,6 @@ router.post("/register", async (req, res) => {
 });
 //로그인
 router.post("/login", async (req, res) => {
-  console.log("in!");
   const { username, password } = req.body;
   if (!username || !password) {
     return res.status(401); //Unauthorized

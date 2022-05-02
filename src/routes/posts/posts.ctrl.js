@@ -26,6 +26,7 @@ export const checkMyPost = (req, res, next) => {
   console.log(post);
   console.log(user);
   if (post.user._id.toString() !== user._id.toString()) {
+    console.log("not my post");
     res.status(403).send("forbidden");
     ctx.status = 403;
     return;
@@ -47,7 +48,7 @@ export const getAllPosts = async (req, res) => {
 
   try {
     const posts = await Post.find(query)
-      .sort({ created_at: 1 })
+      .sort({ createdAt: -1 })
       .limit(10)
       .skip((page - 1) * 10)
       .exec();
@@ -73,15 +74,20 @@ export const getPost = (req, res) => {
   제목, 내용, 이미지?, 태그?, 유저정보(req.user 사용)
 */
 export const createPost = async (req, res) => {
-  const postForm = req.body;
+  const { file, fileName, ...others } = req.body;
+  const postForm = { ...others };
+  const image = { file, fileName };
+  console.log(postForm);
   try {
     const newPost = await Post.create({
       ...postForm,
+      image,
       user: {
         _id: req.user._id,
         username: req.user.username,
       },
     });
+    console.log(newPost);
     res.status(200).send(newPost);
   } catch (e) {
     console.log(e);
@@ -105,13 +111,17 @@ export const deletePost = async (req, res) => {
 //포스트 수정
 export const updatePost = async (req, res) => {
   const { postId } = req.params;
-  const newForm = { ...req.body };
-  console.log("updated in");
-  console.log(newForm);
+  const { file, fileName, ...others } = req.body;
+  const postForm = { ...others };
+  const image = { file, fileName };
   try {
-    const updatedPost = await Post.findByIdAndUpdate(postId, newForm, {
-      new: true,
-    });
+    const updatedPost = await Post.findByIdAndUpdate(
+      postId,
+      { ...postForm, image },
+      {
+        new: true,
+      }
+    );
     res.status(200).send(updatedPost);
   } catch (e) {
     console.log(e);

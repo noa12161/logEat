@@ -1,7 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
-import WritePost from '../components/post/WritePost';
-import PostContainer from '../container/PostContainer';
-import PostListContainer from '../container/PostListContainer';
+import PostContainer from '../../container/PostContainer';
+import PostListContainer from '../../container/posts/PostListContainer';
+import WritePage from './WritePage';
 
 // /posts
 const PostPage = () => {
@@ -10,7 +10,7 @@ const PostPage = () => {
       <Routes>
         <Route index element={<PostListContainer />} />
         <Route path="post/:postId" element={<PostContainer />} />
-        <Route path="write" element={<WritePost />} />
+        <Route path="write" element={<WritePage />} />
       </Routes>
     </div>
   );

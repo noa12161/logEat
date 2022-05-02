@@ -6,7 +6,7 @@ import SideChart from '../components/sideChart/SideChart';
 import ChartContainer from '../container/ChartContainer';
 import NotFound from './NotFound';
 
-import { Routes, Route, useParams, Outlet } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 // 함수들...
 import { changeToStringFormat } from '../lib/functions/common';
 import { changeBodyWeightApi, changeCaloriesApi } from '../lib/api/user';
@@ -15,12 +15,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useState } from 'react';
 import { applyUser } from '../redux/user/userSlice';
 import { initSideChartEditor } from '../redux/buttons/buttonSlice';
-import PostPage from './PostPage';
-import PostContainer from '../container/PostContainer';
-import { useEffect } from 'react';
+import PostPage from './posts/PostPage';
 
 const HomePage = () => {
-  const params = useParams();
   const dispatch = useDispatch();
   const {
     user,

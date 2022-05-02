@@ -1,6 +1,5 @@
 import './container.css';
 import PostItem from '../components/posts/PostItem';
-import { fakePosts } from './FakePosts';
 
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';

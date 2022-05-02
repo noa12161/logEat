@@ -1,23 +1,40 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { createPostApi } from '../../lib/api/posts';
-import { useNavigate } from 'react-router-dom';
+import { createPostApi, updatePostApi } from '../../lib/api/posts';
 
 const initialState = {
   title: '',
   message: '',
-  image: '',
+  file: '',
+  fileName: '',
   tags: [],
-  isUpdate: false,
+  postId: null,
+  responsePost: null,
   isLoading: false,
 };
 
-const writePost = createAsyncThunk(
+// 새 게시글 등록
+export const writePost = createAsyncThunk(
   'write/writePost',
   async (form, { rejectWithValue }) => {
     try {
       const res = await createPostApi(form);
       const newPost = res.data;
+      console.log(newPost);
       return newPost;
+    } catch (e) {
+      console.log(e);
+      return rejectWithValue(e.response.data);
+    }
+  },
+);
+// 기존 게시글 수정
+export const updatePost = createAsyncThunk(
+  'write/updatePost',
+  async (payload, { rejectWithValue }) => {
+    try {
+      const res = await updatePostApi(payload.form, payload.postId);
+      const updatedPost = res.data;
+      return updatedPost;
     } catch (e) {
       console.log(e);
       return rejectWithValue(e.response.data);
@@ -35,14 +52,10 @@ const writeSlice = createSlice({
         ...state,
         title: post.title,
         message: post.title,
-        image: post.image ? post.image : '',
+        file: post.image.file,
+        fileName: post.image.fileName,
         tags: post.tags ? post.tags : [],
-      };
-    },
-    setToUpdate: (state) => {
-      return {
-        ...state,
-        isUpdate: !state.isUpdate,
+        postId: post._id,
       };
     },
     setValue: (state, action) => {
@@ -57,12 +70,24 @@ const writeSlice = createSlice({
       state.isLoading = true;
     },
     [writePost.fulfilled]: (state, action) => {
-      const navigate = useNavigate();
-      navigate(`/posts/post/${action.payload._id}`);
+      console.log('write success');
+      console.log(action);
+      state.responsePost = action.payload;
       state.isLoading = false;
-      state.isUpdate = false;
     },
     [writePost.rejected]: (state, action) => {
+      console.log(action);
+      state.isLoading = false;
+      // 개발 계획중..
+    },
+    [updatePost.pending]: (state) => {
+      state.isLoading = true;
+    },
+    [updatePost.fulfilled]: (state, action) => {
+      state.responsePost = action.payload;
+      state.isLoading = false;
+    },
+    [updatePost.rejected]: (state, action) => {
       console.log(action);
       state.isLoading = false;
       // 개발 계획중..
