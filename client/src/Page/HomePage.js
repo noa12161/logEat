@@ -41,10 +41,6 @@ const HomePage = () => {
     ratio: {},
   });
 
-  // useEffect(() => {
-  //   console.log(params);
-  // }, [params]);
-
   // 사용자 정보 editor value 변경 함수
   const handleUserStateValue = (e) => {
     // if (isNaN(e.target.value)) return alert('숫자를 입력해주세요...');

@@ -1,5 +1,4 @@
 import './page.css';
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
@@ -21,7 +20,8 @@ const LoginPage = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (username === '' || password === '') return;
+    if (username === '' || password === '')
+      return alert('사용자 이름과 비밀번호를 입력해주세요..');
 
     const loginForm = { username, password };
 
@@ -32,13 +32,20 @@ const LoginPage = () => {
       router 이동시 메모리 lack 에러
     */
     try {
+      console.log('login start');
       const response = await loginApi(loginForm);
       setUsername('');
       setPassword('');
-      console.log(response);
       dispatch(login(response.data));
     } catch (e) {
-      console.log(e);
+      if (e.response.data === 'noUser') {
+        return alert('존재하지 않는 사용자 이름입니다.');
+      } else if (e.response.data === 'wrongPassword') {
+        return alert('올바르지 않은 비밀번호입니다');
+      } else {
+        alert('알수없는 오류입니다.');
+      }
+      console.log(e.response.data);
     }
   };
 
@@ -51,25 +58,24 @@ const LoginPage = () => {
       navigate('/', { replace: true });
     } catch (e) {
       console.log('error in LoginPage' + e);
-      // navigate('/');
     }
   }, [user, navigate]);
 
   return (
     <div className="LoginPage_wrapper">
-      <div className="form_desc">LOGIN</div>
+      <div className="form_desc">로그인</div>
       <form onSubmit={handleSubmit}>
         <input
           value={username}
           onChange={handleUsername}
           type="text"
-          placeholder="username..."
+          placeholder="사용자 이름..."
         />
         <input
           value={password}
           onChange={handlePassword}
-          type="text"
-          placeholder="password..."
+          type="password"
+          placeholder="비밀번호..."
         />
         <button>확인</button>
       </form>

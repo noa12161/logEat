@@ -7,7 +7,6 @@ export const getPostById = async (req, res, next) => {
 
   try {
     const post = await Post.findById(postId);
-    console.log(post);
     // 포스트를 찾지 못했으면...
     if (!post) return res.status(404).sed("wrong postId");
 
@@ -23,7 +22,6 @@ export const getPostById = async (req, res, next) => {
 export const checkMyPost = (req, res, next) => {
   const { post, user } = req;
   if (post.user._id.toString() !== user._id.toString()) {
-    console.log("not my post");
     res.status(403).send("forbidden");
     ctx.status = 403;
     return;

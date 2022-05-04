@@ -34,7 +34,6 @@ const Chart = ({ user }) => {
     const sortedData = copyData.sort(
       (a, b) => formatDateString(a.date) - formatDateString(b.date),
     );
-    console.log(sortedData);
     setSortBWByDate(sortedData);
   }, [user]);
 

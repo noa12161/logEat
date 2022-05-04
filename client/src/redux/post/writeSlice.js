@@ -19,7 +19,6 @@ export const writePost = createAsyncThunk(
     try {
       const res = await createPostApi(form);
       const newPost = res.data;
-      console.log(newPost);
       return newPost;
     } catch (e) {
       console.log(e);
@@ -70,8 +69,6 @@ const writeSlice = createSlice({
       state.isLoading = true;
     },
     [writePost.fulfilled]: (state, action) => {
-      console.log('write success');
-      console.log(action);
       state.responsePost = action.payload;
       state.isLoading = false;
     },

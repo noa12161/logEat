@@ -69,7 +69,6 @@ const Log = ({
         ? { ...food, qtt: e.target.value === '' ? '' : Number(e.target.value) }
         : food,
     );
-    console.log(searchedFoodArray);
     setSearchedFoodArray(updated);
   };
   // 음식 용량 단위( 1serv or g) 핸들러
