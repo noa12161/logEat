@@ -6,7 +6,6 @@ const Pagination = ({
   paginate,
   onClickArrow,
 }) => {
-  console.log(typeof page);
   return (
     <ul className="pagination_container jcac">
       <button

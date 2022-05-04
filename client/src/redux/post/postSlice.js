@@ -1,10 +1,11 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { getPostApi } from '../../lib/api/posts';
+import { deletePostApi, getPostApi } from '../../lib/api/posts';
 
 const initialState = {
   post: null,
   isLoading: false,
   err: null,
+  deleteSuccess: false,
 };
 
 export const getPost = createAsyncThunk(
@@ -17,6 +18,20 @@ export const getPost = createAsyncThunk(
     } catch (e) {
       console.log(e);
       return rejectWithValue(e.response.data);
+    }
+  },
+);
+
+export const deletePost = createAsyncThunk(
+  'post/deletePost',
+  async (postId, { rejectWithValue }) => {
+    try {
+      const response = await deletePostApi(postId);
+      const data = response.data;
+      return data;
+    } catch (e) {
+      console.log(e);
+      return rejectWithValue(e.response);
     }
   },
 );
@@ -40,6 +55,20 @@ const postSlice = createSlice({
     [getPost.rejected]: (state, action) => {
       console.log(action);
       state.err = true;
+    },
+    [deletePost.pending]: (state) => {
+      state.isLoading = true;
+    },
+    [deletePost.fulfilled]: (state, action) => {
+      console.log('deletePost/fullfiled');
+      state.isLoading = false;
+      state.deleteSuccess = true;
+    },
+    [deletePost.rejected]: (state, action) => {
+      console.log('deletePost/rejected');
+      console.log(action);
+      state.err = true;
+      state.deleteSuccess = false;
     },
   },
 });

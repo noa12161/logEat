@@ -37,13 +37,18 @@
   display: flex;
   justify-content: center;
   padding: 1rem 0;
+  width: 100%;
 }
 .postItem_body_image img {
-  width: 300px;
+  width: 80%;
   height: 300px;
   object-fit: contain;
 }
 .postItem_body_message {
+}
+.postItem_body_message > * {
+  display: flex;
+  flex-wrap: wrap;
 }
 .postItem_tag_container {
 }
@@ -57,7 +62,7 @@
 .writePost_container {
   padding: 1rem 2rem;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
 }
 .writeButton {
   /* width: 80px; */
@@ -104,4 +109,21 @@
 .pagination_number:hover {
   background-color: lightgray;
   transition: 0.2s;
+}
+
+/* NAVBAR (PostsNav) */
+.postsNav_container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+.postsNav_container > a:first-child {
+  margin-right: 10px;
+}
+
+.postsNav_container > a > div {
+  padding: 0.2rem 0.6rem;
+  border-radius: 5px;
+  box-shadow: var(--box-shadow);
+  background-color: var(--listItem-color);
 }

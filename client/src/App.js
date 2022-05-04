@@ -8,9 +8,17 @@ import { useDispatch } from 'react-redux';
 import { setWindowWidth } from './redux/window/windowSlice.js';
 import { useEffect } from 'react';
 
+import sanitizeHtml from 'sanitize-html';
+
 function App() {
   const dispatch = useDispatch();
   console.log('app!!!!');
+
+  const html = '<strong>hello world</strong>';
+  console.log(sanitizeHtml(html));
+  console.log(sanitizeHtml("<img src=x onerror=alert('img') />"));
+  console.log(sanitizeHtml("console.log('hello world')"));
+  console.log(sanitizeHtml("<script>alert('hello world')</script>"));
 
   useEffect(() => {
     updateDimensions();

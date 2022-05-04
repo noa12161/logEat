@@ -22,8 +22,8 @@ export const createPostApi = async (form) => {
 };
 
 // 포스트 삭제
-export const deletePostApi = async (id) => {
-  return await axios.delete(`/api/posts/${id}`);
+export const deletePostApi = async (postId) => {
+  return await axios.delete(`/api/posts/${postId}`);
 };
 
 //포스트 수정

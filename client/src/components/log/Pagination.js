@@ -1,39 +1,27 @@
-const Pagination = ({
-  pageNumbers,
-  page,
-  lastPage,
-  paginate,
-  onClickArrow,
-}) => {
-  console.log(typeof page);
+// LOG 컴포넌트용 페이지네이션
+
+const Pagination = ({ countOfItems, itemsPerPage, paginate, currentPage }) => {
+  const pageNumbers = [];
+  for (let i = 1; i <= Math.ceil(countOfItems / itemsPerPage); i++) {
+    pageNumbers.push(i);
+  }
   return (
-    <ul className="pagination_container jcac">
-      <button
-        className="pagination_button"
-        onClick={() => onClickArrow(parseInt(page) - 1)}
-        disabled={page <= 1}
-      >
-        이전
-      </button>
-      {pageNumbers.map((pageNum, i) => (
-        <li
-          onClick={() => paginate(pageNum)}
-          className="pagination_number jcac"
-          style={{
-            fontWeight: parseInt(page) === pageNum ? 'bold' : 'normal',
-          }}
-          key={i}
-        >
-          {pageNum}
-        </li>
-      ))}
-      <button
-        className="pagination_button"
-        onClick={() => onClickArrow(parseInt(page) + 1)}
-        disabled={page >= lastPage}
-      >
-        다음
-      </button>
+    <ul className="jcac">
+      {pageNumbers &&
+        pageNumbers.map((n, i) => (
+          <li
+            onClick={() => paginate(n)}
+            className="pagination_number jcac"
+            style={{
+              cursor: 'pointer',
+              padding: '7px',
+              fontWeight: currentPage === n ? 'bold' : 'normal',
+            }}
+            key={i}
+          >
+            {n}
+          </li>
+        ))}
     </ul>
   );
 };

@@ -1,6 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
-import PostContainer from '../../container/PostContainer';
 import PostListContainer from '../../container/posts/PostListContainer';
+import PostContainer from '../../container/PostContainer';
 import WritePage from './WritePage';
 
 // /posts

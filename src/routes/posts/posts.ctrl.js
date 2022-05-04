@@ -1,10 +1,9 @@
+import { sanitizeAll, sanitizeAndShorten } from "../../functions/sanitize.js";
 import Post from "../../models/Post.js";
 
 // postId로 게시글 조회
 export const getPostById = async (req, res, next) => {
   const { postId } = req.params;
-  console.log("in getPostById");
-  console.log(postId);
 
   try {
     const post = await Post.findById(postId);
@@ -23,8 +22,6 @@ export const getPostById = async (req, res, next) => {
 // 내 포스트인지 확인
 export const checkMyPost = (req, res, next) => {
   const { post, user } = req;
-  console.log(post);
-  console.log(user);
   if (post.user._id.toString() !== user._id.toString()) {
     console.log("not my post");
     res.status(403).send("forbidden");
@@ -44,7 +41,6 @@ export const getAllPosts = async (req, res) => {
     ...(username ? { "user.username": username } : {}),
     ...(tag ? { tags: tag } : {}),
   };
-  console.log(query);
 
   try {
     const posts = await Post.find(query)
@@ -54,7 +50,6 @@ export const getAllPosts = async (req, res) => {
       .exec();
     const postCount = await Post.countDocuments(query).exec();
     const lastPage = Math.ceil(postCount / 10);
-
     res.status(200).send({
       posts,
       lastPage,
@@ -77,7 +72,6 @@ export const createPost = async (req, res) => {
   const { file, fileName, ...others } = req.body;
   const postForm = { ...others };
   const image = { file, fileName };
-  console.log(postForm);
   try {
     const newPost = await Post.create({
       ...postForm,
@@ -87,7 +81,6 @@ export const createPost = async (req, res) => {
         username: req.user.username,
       },
     });
-    console.log(newPost);
     res.status(200).send(newPost);
   } catch (e) {
     console.log(e);
@@ -97,8 +90,6 @@ export const createPost = async (req, res) => {
 
 // 포스트 삭제
 export const deletePost = async (req, res) => {
-  console.log("in Delete!");
-  console.log(req.params.postId);
   try {
     const deletedPost = await Post.findByIdAndDelete(req.params.postId);
     res.status(200).send(deletedPost);

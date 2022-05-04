@@ -1,3 +1,4 @@
+import './write.css';
 import React from 'react';
 import { useEffect } from 'react';
 import { useCallback } from 'react';
@@ -61,7 +62,6 @@ const TagBox = ({ onChangeTags, tags }) => {
     </div>
   ));
 
-  const fakeTags = ['파이썬', '자바스크립트'];
   return (
     <div className="tagBox_container">
       <h4>태그</h4>

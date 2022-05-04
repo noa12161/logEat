@@ -2,9 +2,11 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import UpdateDelete from '../post/UpdateDelete';
 import { useRef } from 'react';
+import parse from 'html-react-parser';
+import { setPost } from '../../redux/post/writeSlice';
+import { deletePost } from '../../redux/post/postSlice';
 
-const PostItem = ({ post }) => {
-  console.log(post);
+const PostItem = ({ post, dispatch }) => {
   const { user } = useSelector((state) => state.user);
   const navigate = useNavigate();
 
@@ -19,17 +21,29 @@ const PostItem = ({ post }) => {
     // window.location.reload();
   };
 
-  const messageRef = useRef(null);
-
-  // setTimeout(() => {
-  //   console.log(messageRef);
-  // }, 5000);
-
-  const controlInnerHtml = (message) => {};
+  const onClickEdit = (post) => {
+    if (!post) return;
+    dispatch(setPost(post));
+    navigate(`/posts/write`);
+  };
+  const onClickDelete = (postId) => {
+    if (!post) return;
+    if (window.confirm('정말 삭제 하시겠습니까?')) {
+      dispatch(deletePost(postId));
+    } else {
+      return;
+    }
+  };
 
   return (
     <div className="postItem_container">
-      {user && post.user._id === user._id && <UpdateDelete post={post} />}
+      {user && post.user._id === user._id && (
+        <UpdateDelete
+          post={post}
+          onClickEdit={onClickEdit}
+          onClickDelete={onClickDelete}
+        />
+      )}
       {/* 제목 */}
       <div className="postItem_Title_container">
         <h2 onClick={() => onClickTitle(post._id)}>{post.title}</h2>
@@ -52,9 +66,7 @@ const PostItem = ({ post }) => {
           </div>
         )}
         {/* 내용 */}
-        <div className="postItem_body_message" ref={messageRef}>
-          {post.message}
-        </div>
+        <div className="postItem_body_message">{parse(post.message)}</div>
       </div>
       <div className="postItem_tag_container">
         {post.tags.map((tag, i) => (

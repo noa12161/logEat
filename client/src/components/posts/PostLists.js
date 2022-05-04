@@ -8,11 +8,11 @@ import './posts.css';
   
 */
 
-const PostLists = ({ posts }) => {
+const PostLists = ({ posts, dispatch }) => {
   return (
     <div className="postLists_container">
       {posts.map((post, i) => (
-        <PostItem post={post} key={i} />
+        <PostItem post={post} key={i} dispatch={dispatch} />
       ))}
     </div>
   );

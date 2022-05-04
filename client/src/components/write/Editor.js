@@ -7,16 +7,11 @@ import { useEffect } from 'react';
 const Editor = ({ onChangeValue, title, message }) => {
   const quillElement = useRef(null);
   const quillInstance = useRef(null);
-  console.log('in Editor');
 
   useEffect(() => {
     quillInstance.current = new Quill(quillElement.current, {
       modules: {
-        toolbar: [
-          [{ header: [1, 2, 3, false] }],
-          ['bold', 'italic', 'underline'],
-          ['image', 'code-block'],
-        ],
+        toolbar: [[{ header: [1, 2, 3, false] }], ['bold', 'italic']],
       },
       placeholder: '기록...',
       theme: 'snow', // or 'bubble'

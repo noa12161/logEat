@@ -1,3 +1,4 @@
+import './write.css';
 import React from 'react';
 
 const WriteBtn = ({ onSubmitPost, onCancel, update }) => {

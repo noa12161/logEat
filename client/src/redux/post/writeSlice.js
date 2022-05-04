@@ -52,8 +52,8 @@ const writeSlice = createSlice({
         ...state,
         title: post.title,
         message: post.title,
-        file: post.image.file,
-        fileName: post.image.fileName,
+        file: post.image ? post.image.file : '',
+        fileName: post.image ? post.image.fileName : '',
         tags: post.tags ? post.tags : [],
         postId: post._id,
       };

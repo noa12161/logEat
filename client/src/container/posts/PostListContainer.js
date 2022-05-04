@@ -21,6 +21,7 @@ import { getAllPosts } from '../../redux/posts/postsSlice';
 const PostListContainer = () => {
   const dispatch = useDispatch();
   const { posts, isLoading, lastPage } = useSelector((state) => state.posts);
+  const { user } = useSelector((state) => state.user);
   const location = useLocation();
 
   const { search } = location;
@@ -33,8 +34,12 @@ const PostListContainer = () => {
 
   return (
     <div>
-      <WritePost />
-      {isLoading ? <div>Loading....</div> : <PostLists posts={posts} />}
+      {user && <WritePost user={user} />}
+      {isLoading ? (
+        <div>Loading....</div>
+      ) : (
+        <PostLists posts={posts} dispatch={dispatch} />
+      )}
       <PaginationContainer query={query} lastPage={lastPage} />
     </div>
   );

@@ -8,9 +8,9 @@ import { fileURLToPath } from "url";
 import { dirname } from "path";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-console.log(__filename);
-console.log(__dirname);
-console.log(path.join(__dirname, "../client/build"));
+// console.log(__filename);
+// console.log(__dirname);
+// console.log(path.join(__dirname, "../client/build"));
 // 라우터
 import authRoutes from "./routes/auth.js";
 import foodRoutes from "./routes/food.js";

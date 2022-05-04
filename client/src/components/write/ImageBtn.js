@@ -1,17 +1,9 @@
-import React from 'react';
-
+import './write.css';
 const Preview = (file) => {
   console.log(file);
   return (
-    <div
-      className="preview_container"
-      style={{ width: '100px', height: '100px' }}
-    >
-      <img
-        style={{ width: '100%', objectFit: 'contain' }}
-        src={file.file}
-        alt="imagePreview"
-      />
+    <div className="preview_container">
+      <img className="preview_img" src={file.file} alt="imagePreview" />
     </div>
   );
 };
@@ -19,7 +11,9 @@ const Preview = (file) => {
 const ImageBtn = ({ uploadImage, file }) => {
   return (
     <div className="imageBtn_container">
-      <label className="imageBtn_label">이미지 업로드</label>
+      <label className="imageBtn_label" htmlFor="file">
+        이미지 업로드
+      </label>
       <input
         type="file"
         id="file"
