@@ -31,9 +31,12 @@ const RegisterPage = () => {
 
     try {
       const response = await registerApi(registerForm);
+      console.log(response);
       if (response.status === 200) dispatch(registerSuccess());
     } catch (e) {
-      console.log(e);
+      if (e.response.data === 'existUsername')
+        return alert('존재하는 사용자 이름입니다.');
+      return alert('알수없는 오류입니다...');
     }
     setRegisterForm({
       username: '',
@@ -65,27 +68,27 @@ const RegisterPage = () => {
 
   return (
     <div className="LoginPage_wrapper">
-      <div className="form_desc">REGISTER</div>
+      <div className="form_desc">회원가입</div>
       <form onSubmit={handleSubmit}>
         <input
           name="username"
           value={registerForm.username}
           onChange={(e) => handleInput(e)}
           type="text"
-          placeholder="username..."
+          placeholder="사용자 이름..."
         />
         <input
           name="password"
           value={registerForm.password}
           onChange={(e) => handleInput(e)}
           type="password"
-          placeholder="password..."
+          placeholder="비밀번호..."
         />
         <input
           value={confirmPassword}
           onChange={handleConfirmPassword}
           type="password"
-          placeholder="confirm password..."
+          placeholder="비밀번호 확인..."
         />
         <input
           name="startWeight"

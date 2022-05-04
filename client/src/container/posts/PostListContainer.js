@@ -9,6 +9,7 @@ import qs from 'qs';
 // 리덕스
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllPosts } from '../../redux/posts/postsSlice';
+import { initPost } from '../../redux/post/postSlice';
 
 /*
   첫 렌더링시 모든 포스트 조회
@@ -22,6 +23,7 @@ const PostListContainer = () => {
   const dispatch = useDispatch();
   const { posts, isLoading, lastPage } = useSelector((state) => state.posts);
   const { user } = useSelector((state) => state.user);
+  const { deleteSuccess } = useSelector((state) => state.post);
   const location = useLocation();
 
   const { search } = location;
@@ -31,6 +33,12 @@ const PostListContainer = () => {
   useEffect(() => {
     dispatch(getAllPosts(queryString));
   }, [search, dispatch, queryString]);
+
+  useEffect(() => {
+    if (!deleteSuccess) return;
+    dispatch(initPost());
+    dispatch(getAllPosts(queryString));
+  }, [dispatch, deleteSuccess, queryString]);
 
   return (
     <div>
