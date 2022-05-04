@@ -2,23 +2,16 @@ import './page.css';
 import SideBar from '../components/sidebar/SideBar';
 import Header from '../components/header/Header';
 import LogContainer from '../container/LogContainer';
-import SideChart from '../components/sideChart/SideChart';
 import ChartContainer from '../container/ChartContainer';
+import SideChartCont from '../container/sideChart/SideChartCont';
 import NotFound from './NotFound';
 
 import { Routes, Route } from 'react-router-dom';
-// 함수들...
-import { changeToStringFormat } from '../lib/functions/common';
-import { changeBodyWeightApi, changeCaloriesApi } from '../lib/api/user';
 // 리덕스...
-import { useSelector, useDispatch } from 'react-redux';
-import { useState } from 'react';
-import { applyUser } from '../redux/user/userSlice';
-import { initSideChartEditor } from '../redux/buttons/buttonSlice';
+import { useSelector } from 'react-redux';
 import PostPage from './posts/PostPage';
 
 const HomePage = () => {
-  const dispatch = useDispatch();
   const {
     user,
     date,
@@ -35,69 +28,6 @@ const HomePage = () => {
     };
   });
 
-  const [userState, setUserState] = useState({
-    weight: '',
-    calories: '',
-    ratio: {},
-  });
-
-  // useEffect(() => {
-  //   console.log(params);
-  // }, [params]);
-
-  // 사용자 정보 editor value 변경 함수
-  const handleUserStateValue = (e) => {
-    // if (isNaN(e.target.value)) return alert('숫자를 입력해주세요...');
-
-    setUserState({
-      ...userState,
-      [e.target.name]: e.target.value === '' ? '' : Number(e.target.value),
-    });
-  };
-
-  // 현재 몸무게 변화 함수...
-  const handleWeightChange = async (e, weight, date) => {
-    e.preventDefault();
-    if (weight === '') return alert('빈칸은 입력할수 없습니다...');
-    if (isNaN(weight)) return alert('숫자를 입력해주세요...');
-
-    const res = await changeBodyWeightApi(
-      user.username,
-      weight,
-      changeToStringFormat(date),
-    );
-    const updatedUser = res.data;
-
-    localStorage.setItem('user', JSON.stringify(updatedUser));
-    dispatch(applyUser(updatedUser));
-    dispatch(initSideChartEditor());
-
-    setUserState({
-      weight: '',
-      calories: '',
-      ratio: {},
-    });
-  };
-  // 목표 칼로리 변화 함수...
-  const handleTargetCalChange = async (e, calories) => {
-    e.preventDefault();
-    if (calories === '') return alert('빈칸은 입력할수 없습니다...');
-    if (isNaN(calories)) return alert('숫자를 입력해주세요...');
-
-    const res = await changeCaloriesApi(user.username, calories);
-    const updatedUser = res.data;
-
-    localStorage.setItem('user', JSON.stringify(updatedUser));
-    dispatch(applyUser(updatedUser));
-
-    dispatch(initSideChartEditor());
-
-    setUserState({
-      weight: '',
-      calories: '',
-      ratio: {},
-    });
-  };
 
   return (
     <div className="HomePage">
@@ -124,13 +54,9 @@ const HomePage = () => {
         </Routes>
       </div>
       {user && (
-        <SideChart
+        <SideChartCont
           user={user}
           nutrition={currentDateNutrition.totalNutrition}
-          userState={userState}
-          handleUserStateValue={handleUserStateValue}
-          handleWeightChange={handleWeightChange}
-          handleTargetCalChange={handleTargetCalChange}
           sideChartEdditorHandler={sideChartEdditorHandler}
         />
       )}

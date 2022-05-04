@@ -69,7 +69,6 @@ const Log = ({
         ? { ...food, qtt: e.target.value === '' ? '' : Number(e.target.value) }
         : food,
     );
-    console.log(searchedFoodArray);
     setSearchedFoodArray(updated);
   };
   // 음식 용량 단위( 1serv or g) 핸들러
@@ -114,7 +113,7 @@ const Log = ({
           </div>
         )}
         <div className="log_contents_container">
-          <div className="log_contents_upper jcac">개발중....</div>
+          {/* <div className="log_contents_upper jcac">개발중....</div> */}
           {/* 실제 컨텐츠 영역 */}
           <div className="log_contents_down">
             <div className="log_contents_down_myList">

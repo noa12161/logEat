@@ -24,7 +24,6 @@ const ImageUploadContainer = () => {
       fileReader.readAsDataURL(file);
 
       fileReader.onload = () => {
-        console.log(fileReader.result);
         resolve(fileReader.result);
       };
 
