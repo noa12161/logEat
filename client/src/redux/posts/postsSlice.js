@@ -32,7 +32,6 @@ const postsSlice = createSlice({
       state.isLoading = true;
     },
     [getAllPosts.fulfilled]: (state, action) => {
-      console.log(action);
       state.isLoading = false;
       state.posts = action.payload.posts;
       state.lastPage = action.payload.lastPage;

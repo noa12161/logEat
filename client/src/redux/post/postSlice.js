@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { deletePostApi, getPostApi } from '../../lib/api/posts';
-import { useNavigate } from 'react-router-dom';
 
 const initialState = {
   post: null,
@@ -62,7 +61,6 @@ const postSlice = createSlice({
       state.isLoading = true;
     },
     [deletePost.fulfilled]: (state, action) => {
-      console.log('deletePost/fullfiled');
       state.isLoading = false;
       state.deleteSuccess = true;
     },

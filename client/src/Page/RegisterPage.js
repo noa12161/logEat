@@ -61,7 +61,6 @@ const RegisterPage = () => {
   let navigate = useNavigate();
   useEffect(() => {
     if (!register.status) return;
-    console.log(register.status);
     dispatch(registerInit());
     navigate('/', { replace: true });
   }, [register, navigate, dispatch]);

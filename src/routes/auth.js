@@ -2,7 +2,6 @@ import { Router } from "express";
 import User from "../models/User.js";
 import jwt from "jsonwebtoken";
 import { changeToStringFormat } from "../functions/userFunctions.js";
-import verifyJwt from "../middleWare/verifyJwt.js";
 
 const router = Router();
 
@@ -52,7 +51,6 @@ router.post("/login", async (req, res) => {
     const user = await User.findOne({ username });
     // 계정이 존재하지 않으면 에러 처리
     if (!user) {
-      console.log(`no user as ${username}`);
       res.status(401).send("noUser");
       return;
     }

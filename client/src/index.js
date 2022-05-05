@@ -9,15 +9,6 @@ import { store } from './redux/store.js';
 import { Provider } from 'react-redux';
 import { login } from './redux/user/userSlice';
 
-// import qs from 'qs';
-// const search = window.location.search;
-// const query = qs.parse(search, { ignoreQueryPrefix: true });
-// console.log(query);
-// const { username, tags, page } = query;
-// console.log(username, tags, page);
-// const queryString = qs.stringify(query);
-// console.log(queryString);
-
 //로그인 후 페이지 새로고침 해도 로그인 유지하게 해주는 fn()
 const loaderUser = async () => {
   try {
@@ -44,51 +35,3 @@ ReactDOM.render(
   </Provider>,
   document.getElementById('root'),
 );
-
-/*
-  TO FIX....
-*/
-
-/*
-  추가할 기능...
-
-  검색 버튼 누르고 서버에서 요청 받아올때까지 로딩 스피너 구현...
-  내 음식 리스트의 용량 수정...
-
-  전체 게시글 보기
-  친구 게시글 보기
-  내 게시글 보기
-  게시글 작성
-    // 로그인 필요
-    제목
-    내용
-    사진
-    댓글
-      댓글
-    좋아요
-    // 로그인 필요, 내 게시글
-  게시글 수정
-    // 로그인 필요, 내 게시글
-  게시글 삭제
-
-  친구 추가
-  친구 삭제
-
-
-  로그인 -> 서버에서 받은 유저정보를 리덕스+로컬스토리지에 저장
-  로그아웃 -> 리덕스 + 로컬스토리지 초기화
-  음식등록 -> access 토큰 검증 -> DB에 추가
-  음식 삭제 ->  access 토큰 검증 -> DB에서 삭제
-
-
-
-
-*/
-
-/*
-  나중에 추가할 기능
-
-  음식 즐겨찾기 기능
-  특정 날짜의 음식 데이터를 게시글에 등록할수있는 기능
-
-*/

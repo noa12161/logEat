@@ -1,7 +1,6 @@
 import axios from 'axios';
 // 전체 포스트 조회
 export const getAllPostsApi = async (queryString) => {
-  console.log(queryString);
   const url = queryString ? `/api/posts?${queryString}` : `/api/posts`;
   return await axios.get(url);
 };
