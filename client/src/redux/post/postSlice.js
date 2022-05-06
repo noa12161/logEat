@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { deletePostApi, getPostApi } from '../../lib/api/posts';
-import { useNavigate } from 'react-router-dom';
 
 const initialState = {
   post: null,

@@ -55,11 +55,12 @@ const Header = ({ user }) => {
     localStorage.removeItem('user');
   };
 
+  // 로그인 했을시 오늘 날짜 설정
   useEffect(() => {
-    // 로그인 했을시...
-    // 오늘 날짜 설정
+    if (!user) return;
     dispatch(changeDate(startDate.toLocaleDateString()));
-  }, [dispatch, startDate]);
+    console.log('login??');
+  }, [dispatch, startDate, user]);
 
   // user 정보가 변할때마다 foodList 갱신...
   useEffect(() => {
@@ -74,8 +75,9 @@ const Header = ({ user }) => {
     dispatch(setFoodList(foodLists));
   }, [user, date, dispatch]);
 
-  // currentDateNutrion.calculatedNutriotion
-  // 기존 음식데이터의 객체배열을 용량단위, 용량을 기준으로 총 열량,탄수,단백,지방 계산...(객체배열 반환)
+  // currentDateNutrion.calculatedNutriotion 구하기
+  // 기존 음식데이터의 객체배열을 용량단위, 용량을 기준으로
+  // 총 열량,탄수,단백,지방 계산...(객체배열 반환)
   useEffect(() => {
     if (!foodList) {
       dispatch(initializeCurrentDateNutrition());

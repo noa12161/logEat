@@ -1,20 +1,16 @@
-import React, { useState } from 'react';
 import './sideChart.css';
-import { convertToFixedNum } from '../../lib/functions/common';
-import { useEffect, useRef, forwardRef } from 'react';
+import React, { useState, useEffect } from 'react';
+import WeightEditor from './WeightEditor';
+import CalEditor from './CalEditor';
+import ProgressBars from './ProgressBars';
 import PieChart from '../chart/PieChart';
 import { Close } from '@material-ui/icons';
-import { IconButton } from '@mui/material';
 // 리덕스
 import { useDispatch, useSelector } from 'react-redux';
 import {
   setSideChartEditor,
   setShowSideChart,
 } from '../../redux/buttons/buttonSlice';
-// date-picker
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-import { ko } from 'date-fns/esm/locale';
 
 const SideChart = ({
   user,
@@ -28,28 +24,16 @@ const SideChart = ({
   const dispatch = useDispatch();
   const { windowWidth } = useSelector((state) => state.window);
   const { showSideChart } = useSelector((state) => state.buttons);
-  const [nutritionRatio, setNutritionRatio] = useState({
+  const [totalNutrion, setTotalNutrion] = useState({});
+  const nutritionRatio = {
     carb: 5,
     protein: 3,
     fat: 2,
-  });
-  const [totalNutrion, setTotalNutrion] = useState({});
+  };
   // 차트 데이터
   const [chartData, setChartData] = useState(null);
 
-  //date picker
-  const dateRef = useRef();
-  const [startDate, setStartDate] = useState(new Date());
-  const ExampleCustomInput = forwardRef(({ value, onClick }, ref) => (
-    <button
-      className="example-custom-input sideChart_datepicker"
-      onClick={onClick}
-      ref={ref}
-    >
-      {value}
-    </button>
-  ));
-
+  // 해당 날짜의 하루 총합 영양성분에 희해 localStates 변경
   useEffect(() => {
     if (!nutrition) {
       setTotalNutrion({});
@@ -76,11 +60,6 @@ const SideChart = ({
     });
   }, [nutrition]);
 
-  // Progress Bar width % 구하는 함수
-  const getProgress = (current, target) => {
-    return (current / target) * 100 > 100 ? 100 : (current / target) * 100;
-  };
-
   return (
     <div
       className="SideChart"
@@ -90,6 +69,7 @@ const SideChart = ({
         zIndex: windowWidth > 1024 ? 0 : showSideChart ? 10 : 0,
       }}
     >
+      {/* 반응형으로 화면 넓이 1024px 이하일떄 사이드차트 토글버튼 보여줌 */}
       {windowWidth <= 1024 && showSideChart && (
         <div className="sideChart_close_button_container">
           <Close
@@ -137,269 +117,28 @@ const SideChart = ({
           </div>
         </div>
       </div>
+      {/* 몸무게, 목표 칼로리 수정 버튼 클릭시 나오는 화면들 */}
       {sideChartEdditorHandler.weightEditor && (
-        <div className="edditor">
-          <div className="edditor_contents_container">
-            <div className="editor_contents">
-              <button
-                className="editor_button"
-                onClick={() => dispatch(setSideChartEditor('weightEditor'))}
-              >
-                <Close />
-              </button>
-              <span>날짜 선택</span>
-              <div className="datepicker_container">
-                <DatePicker
-                  locale={ko} // 한글로 변경
-                  dateFormat="yyyy/MM/dd"
-                  selected={startDate}
-                  onChange={(date) => setStartDate(date)}
-                  customInput={<ExampleCustomInput ref={dateRef} />}
-                />
-              </div>
-              <span>변화된 체중!!!</span>
-              <form>
-                <div className="editor_input_container">
-                  <input
-                    name="weight"
-                    value={userState.weight}
-                    onChange={handleUserStateValue}
-                    type="number"
-                  />
-                  kg
-                </div>
-                <button
-                  onClick={(e) =>
-                    handleWeightChange(e, userState.weight, startDate)
-                  }
-                >
-                  확인
-                </button>
-              </form>
-            </div>
-          </div>
-        </div>
+        <WeightEditor
+          userWeight={userState.weight}
+          handleUserStateValue={handleUserStateValue}
+          handleWeightChange={handleWeightChange}
+        />
       )}
       {sideChartEdditorHandler.calEditor && (
-        <div className="edditor">
-          <div className="edditor_contents_container">
-            <div className="editor_contents">
-              <button
-                className="editor_button"
-                onClick={() => dispatch(setSideChartEditor('calEditor'))}
-              >
-                <Close />
-              </button>
-              <span>목표 칼로리</span>
-              <form>
-                <input
-                  name="calories"
-                  value={userState.calories}
-                  onChange={handleUserStateValue}
-                  type="number"
-                />
-                <button
-                  onClick={(e) => handleTargetCalChange(e, userState.calories)}
-                >
-                  확인
-                </button>
-              </form>
-            </div>
-          </div>
-        </div>
+        <CalEditor
+          targetCalorie={userState.calories}
+          handleUserStateValue={handleUserStateValue}
+          handleTargetCalChange={handleTargetCalChange}
+        />
       )}
-      {sideChartEdditorHandler.ratioEditor && (
-        <div className="edditor">
-          <div className="edditor_contents_container">
-            <div className="editor_contents">
-              <button
-                className="editor_button"
-                onClick={() => dispatch(setSideChartEditor('ratioEditor'))}
-              >
-                <Close />
-              </button>
-              <span>목표 탄단지 비율</span>
-              <form>
-                <input type="text" />
-                <button>확인</button>
-              </form>
-            </div>
-          </div>
-        </div>
-      )}
-      {/* <div className="edditor"></div>  */}
-      {/* 칼로리 */}
-      <div className="sideChart_Cal_container">
-        <div className="target_bar_container">
-          <div className="target_bar_left sideChart_outer_left">
-            목표 칼로리
-          </div>
-          <div className="target_bar_right sideChart_outer_right">
-            <div className="target_bar_right_bar_container sideChart_inner_left">
-              <div className="progress_bar"></div>
-            </div>
-            <div className="target_bar_right_text sideChart_inner_right">
-              {user.currentTargetCalories}
-            </div>
-          </div>
-        </div>
-        <div className="current_bar_container">
-          <div className="current_bar_left sideChart_outer_left">
-            섭취 칼로리
-          </div>
-          <div className="current_bar_right sideChart_outer_right">
-            <div className="current_bar_right_bar sideChart_inner_left">
-              <div
-                style={{
-                  width: nutrition
-                    ? `${getProgress(
-                        totalNutrion.cal,
-                        user.currentTargetCalories,
-                      )}%`
-                    : 0,
-                }}
-                className="cal_progress_bar"
-              ></div>
-            </div>
-            <div className="current_bar_right_text sideChart_inner_right">
-              {totalNutrion.cal}
-            </div>
-          </div>
-        </div>
-      </div>
-      {/* 탄수화물 */}
-      <div className="sideChart_Cal_container">
-        <div className="target_bar_container">
-          <div className="target_bar_left sideChart_outer_left">
-            목표 탄수화물
-          </div>
-          <div className="target_bar_right sideChart_outer_right">
-            <div className="target_bar_right_bar_container sideChart_inner_left">
-              <div className="progress_bar"></div>
-            </div>
-            <div className="target_bar_right_text sideChart_inner_right">
-              {convertToFixedNum(
-                (user.currentTargetCalories * (nutritionRatio.carb * 0.1)) / 4,
-              )}
-            </div>
-          </div>
-        </div>
-        <div className="current_bar_container">
-          <div className="current_bar_left sideChart_outer_left">
-            섭취 탄수화물
-          </div>
-          <div className="current_bar_right sideChart_outer_right">
-            <div className="current_bar_right_bar sideChart_inner_left">
-              <div
-                style={{
-                  width: nutrition
-                    ? `${getProgress(
-                        totalNutrion.carb,
-                        convertToFixedNum(
-                          (user.currentTargetCalories *
-                            (nutritionRatio.carb * 0.1)) /
-                            4,
-                        ),
-                      )}%`
-                    : 0,
-                }}
-                className="cal_progress_bar"
-              ></div>
-            </div>
-            <div className="current_bar_right_text sideChart_inner_right">
-              {totalNutrion.carb}
-            </div>
-          </div>
-        </div>
-      </div>
-      {/* 단백질 */}
-      <div className="sideChart_Cal_container">
-        <div className="target_bar_container">
-          <div className="target_bar_left sideChart_outer_left">
-            목표 단백질
-          </div>
-          <div className="target_bar_right sideChart_outer_right">
-            <div className="target_bar_right_bar_container sideChart_inner_left">
-              <div className="progress_bar"></div>
-            </div>
-            <div className="target_bar_right_text sideChart_inner_right">
-              {convertToFixedNum(
-                (user.currentTargetCalories * (nutritionRatio.protein * 0.1)) /
-                  4,
-              )}
-            </div>
-          </div>
-        </div>
-        <div className="current_bar_container">
-          <div className="current_bar_left sideChart_outer_left">
-            섭취 단백질
-          </div>
-          <div className="current_bar_right sideChart_outer_right">
-            <div className="current_bar_right_bar sideChart_inner_left">
-              <div
-                style={{
-                  width: nutrition
-                    ? `${getProgress(
-                        totalNutrion.protein,
-                        convertToFixedNum(
-                          (user.currentTargetCalories *
-                            (nutritionRatio.protein * 0.1)) /
-                            4,
-                        ),
-                      )}%`
-                    : 0,
-                }}
-                className="cal_progress_bar"
-              ></div>
-            </div>
-            <div className="current_bar_right_text sideChart_inner_right">
-              {totalNutrion.protein}
-            </div>
-          </div>
-        </div>
-      </div>
-      {/* 지방 */}
-      <div className="sideChart_Cal_container">
-        <div className="target_bar_container">
-          <div className="target_bar_left sideChart_outer_left">목표 지방</div>
-          <div className="target_bar_right sideChart_outer_right">
-            <div className="target_bar_right_bar_container sideChart_inner_left">
-              <div className="progress_bar"></div>
-            </div>
-            <div className="target_bar_right_text sideChart_inner_right">
-              {convertToFixedNum(
-                (user.currentTargetCalories * (nutritionRatio.fat * 0.1)) / 8,
-              )}
-            </div>
-          </div>
-        </div>
-        <div className="current_bar_container">
-          <div className="current_bar_left sideChart_outer_left">섭취 지방</div>
-          <div className="current_bar_right sideChart_outer_right">
-            <div className="current_bar_right_bar sideChart_inner_left">
-              <div
-                style={{
-                  width: nutrition
-                    ? `${getProgress(
-                        totalNutrion.fat,
-                        convertToFixedNum(
-                          (user.currentTargetCalories *
-                            (nutritionRatio.fat * 0.1)) /
-                            8,
-                        ),
-                      )}%`
-                    : 0,
-                }}
-                className="cal_progress_bar"
-              ></div>
-            </div>
-            <div className="current_bar_right_text sideChart_inner_right">
-              {totalNutrion.fat}
-            </div>
-          </div>
-        </div>
-      </div>
-      {/* 탄단지 비율 */}
+      {/* Bar 그래프 */}
+      <ProgressBars
+        user={user}
+        totalNutrion={totalNutrion}
+        nutrition={nutrition}
+      />
+      {/* 탄단지 비율 그래프 */}
       {chartData && (
         <div className="sideChart_nutrition_ratio_container jcac">
           <div className="jcac" style={{ width: '70%' }}>

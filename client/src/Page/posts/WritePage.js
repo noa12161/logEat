@@ -4,16 +4,27 @@ import EditorContainer from '../../container/write/EditorContainer';
 import Tagcontainer from '../../container/write/Tagcontainer';
 import WriteUpdateBtnContainer from '../../container/write/WriteUpdateBtnContainer';
 import ImageUploadContainer from '../../container/write/ImageUploadContainer';
-
+// 리덕스
+import { useSelector } from 'react-redux';
+import { CircularProgress } from '@mui/material';
 // /posts/write
 const WritePage = () => {
+  const { isLoading } = useSelector((state) => state.write);
   return (
-    <div className="writePage_container">
-      <EditorContainer />
-      <Tagcontainer />
-      <ImageUploadContainer />
-      <WriteUpdateBtnContainer />
-    </div>
+    <>
+      {isLoading ? (
+        <div style={{ height: '100%' }} className="jcac">
+          <CircularProgress />
+        </div>
+      ) : (
+        <div className="writePage_container">
+          <EditorContainer />
+          <Tagcontainer />
+          <ImageUploadContainer />
+          <WriteUpdateBtnContainer />
+        </div>
+      )}
+    </>
   );
 };
 
