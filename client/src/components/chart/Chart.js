@@ -5,6 +5,7 @@ import LineChart from './LineChart';
 // 리덕스
 import { useSelector } from 'react-redux';
 import { formatDateString } from '../../lib/functions/common';
+import { CircularProgress } from '@mui/material';
 
 const Chart = ({ user }) => {
   const { monthCaloriesIntake } = useSelector((state) => state.food);
@@ -65,7 +66,9 @@ const Chart = ({ user }) => {
           />
         </div>
       ) : (
-        <div>Loading...</div>
+        <div style={{ flex: '0.5' }} className="jcac">
+          <CircularProgress />
+        </div>
       )}
       <div className="monthly_calories_chartContainer">
         <LineChart

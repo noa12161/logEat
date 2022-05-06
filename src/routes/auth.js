@@ -72,26 +72,15 @@ router.post("/login", async (req, res) => {
 
 //로그아웃
 router.post("/logout", (req, res) => {
-  res.clearCookie("access_token");
+  res.clearCookie("accessToken");
   res.status(200).json("logout success!");
 });
 
-router.post("/check", async (req, res) => {
-  const { token } = req.body;
-  try {
-    if (token) {
-      jwt.verify(token, process.env.JWT_SEC, (err, user) => {
-        if (err) {
-          return res.status(403).json("Token is not valid!");
-        }
-        return res.send(user);
-      });
-    } else {
-      res.status(401).json("You are not authenticated!");
-    }
-  } catch (e) {
-    res.status(500).send(e);
-  }
+router.post("/check", verifyJwt, async (req, res) => {
+  console.log("in Check!");
+  console.log(req.user);
+  if (req.user) return res.status(200).send(true);
+  res.status(500).send(false);
 });
 
 export default router;

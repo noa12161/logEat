@@ -47,6 +47,7 @@ export const fnMonthCalIntake = createAsyncThunk(
   'food/fnMonthCalIntake',
   async (form, { rejectWithValue, dispatch, getState }) => {
     const user = getState().user.user;
+    // 함수가 시작한 시점의 유저 정보 저장
     dispatch(setPrevUser(user));
     try {
       const response = await getArrayOfMonthCaloriesIntake(form);
@@ -100,6 +101,12 @@ const foodSlice = createSlice({
         },
       };
     },
+    clearSearchedFood: (state) => {
+      return {
+        ...state,
+        searchedFood: initialState.searchedFood,
+      };
+    },
   },
   extraReducers: {
     // 음식 검색 thunk
@@ -127,7 +134,6 @@ const foodSlice = createSlice({
       state.monthCaloriesIntake.err.status = false;
     },
     [fnMonthCalIntake.fulfilled]: (state, action) => {
-      console.log('sucees');
       state.monthCaloriesIntake.isFetching = false;
       state.monthCaloriesIntake.data = action.payload.response;
       state.monthCaloriesIntake.currentMonth = action.payload.currentMonth;
@@ -150,6 +156,7 @@ export const {
   setFoodList,
   setCalculatedNutrition,
   setTotalNutrition,
+  clearSearchedFood,
 } = foodSlice.actions;
 
 export default foodSlice.reducer;

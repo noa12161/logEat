@@ -22,7 +22,7 @@ const EditorContainer = () => {
     return () => {
       dispatch(initWrite());
     };
-  }, [dispatch]);
+  }, []);
 
   return (
     <Editor onChangeValue={onChangeValue} title={title} message={message} />

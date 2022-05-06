@@ -24,13 +24,14 @@ const RegisterPage = () => {
       registerForm.password === '' ||
       confirmPassword === ''
     )
-      return;
+      return alert('빈칸을 채워주세요.');
 
     if (registerForm.password !== confirmPassword)
-      return alert('비밀번호가 다릅니다..');
+      return alert('비밀번호가 다릅니다.');
 
     try {
       const response = await registerApi(registerForm);
+      console.log(response);
       if (response.status === 200) dispatch(registerSuccess());
     } catch (e) {
       if (e.response.data === 'existUsername')

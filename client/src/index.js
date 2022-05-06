@@ -8,21 +8,14 @@ import { BrowserRouter } from 'react-router-dom';
 import { store } from './redux/store.js';
 import { Provider } from 'react-redux';
 import { login } from './redux/user/userSlice';
-
 //로그인 후 페이지 새로고침 해도 로그인 유지하게 해주는 fn()
 const loaderUser = async () => {
   try {
     const user = localStorage.getItem('user');
     if (!user) return; // 로그인 상태가 아니라면 아무것도 안 함
-
-    // const token = JSON.parse(user).accessToken;
-    // const res = await axios.post('/api/auth/check', token);
-    // console.log(res);
-
     store.dispatch(login(JSON.parse(user))); //redux.user.user 를 설정
   } catch (e) {
     console.log(e);
-    console.log('localStorage is not working');
   }
 };
 loaderUser();
