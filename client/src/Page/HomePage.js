@@ -1,7 +1,7 @@
 import './page.css';
 import SideBar from '../components/sidebar/SideBar';
 import Header from '../components/header/Header';
-import LogContainer from '../container/LogContainer';
+import LogContainer from '../container/log/LogContainer';
 import ChartContainer from '../container/ChartContainer';
 import SideChartCont from '../container/sideChart/SideChartCont';
 import NotFound from './NotFound';
@@ -27,7 +27,6 @@ const HomePage = () => {
       sideChartEdditorHandler: buttons.sideChartEdditorHandler,
     };
   });
-
 
   return (
     <div className="HomePage">

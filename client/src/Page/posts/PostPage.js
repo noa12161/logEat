@@ -6,7 +6,7 @@ import WritePage from './WritePage';
 // /posts
 const PostPage = () => {
   return (
-    <div>
+    <div style={{ height: `calc(100% - 150px)` }}>
       <Routes>
         <Route index element={<PostListContainer />} />
         <Route path="post/:postId" element={<PostContainer />} />

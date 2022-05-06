@@ -1,6 +1,53 @@
 homePage 
   
-    LogContainer.js
+    #LogContainer.js
+
+        --주요 기능--
+            음식검색 -> 공공데이터포털에서 데이터 받아옴
+            검색한 음식 용량단위,  용량 선택후 선택한 날짜에 먹은 음식 리스트에 추가
+            동일한 날짜에 동일한 음식의id값이 등록될시 해당 음식의 용량만 증가 이떄
+            용량 단위는 구분한다
+            eg) id값이 22인 음식을 용량단위 1g 용량을 100으로 추가후
+                다시 용량단위 1g 용량을 200으로 추가시 
+                사용자의 DB에는 1g 용량 300으로 저장되있다.
+                이때 같은 id인 22로 용량단위 1serv 용량 4로 저장시
+                DB에는 같은 id22인 음식을 2개로 분류한다
+                1g 300 / 1serv 4
+                즉 1차로 날짜를 확인하고
+                   2차로 음식 id를 확인하고
+                   3차로 음식의 용량단위를 확인하여 DB에 저장한다.
+
+                      **막힌부분**
+                        user의 model schema 구조가
+                        user
+                          foodData[
+                            {
+                              date
+                              meals:[
+                                {
+                                  하나의 음식 객체
+                                }
+                              ]
+                            },
+                            {...},
+                            {...}
+                          ]
+                      형식으로 2중 객체배열로 이루어진 구조에서 하나의 데이터에 접근하는 방법을
+                      해결하기위해 mongoDB의 find 메서드에 대해 더 공부해야했고 이때 공식문서의 도움을
+                      많이 받았다. 결국 mongoDb의 find메서드가 지원하는 옵션의 arrayFilters를 이용해
+                      원하던 결과를 이루어냈다. 
+                      하지만 근본적으로 nested field는 가급적 삼가 해야한다는 정보도 알게되어
+                      model schema 구조의 중요성도 알게되어 이에 대해서도 공부를 해야겠다.
+
+
+                           
+
+            먹은 음식 삭제
+
+            
+
+
+
         선택한 음식 삭제 함수(mealObj)
             apiCall({username, date, mealObj})
             응답으로 locaStorage설정
@@ -17,7 +64,7 @@ homePage
             검색창 숨기기
             -> 검색창 value는 어디서 초기화 ?????
 
-        Log.js
+        #Log.js
             --localState--
                 nameOfFood(검색음식 이름)
                 searchedFoodArray(음식 검색 결과)
@@ -26,19 +73,38 @@ homePage
                   indexOfFirstPost,currentPosts
             페이지네이션 구현( searchedFoodArray 참조함 )
 
-            음식 검색 버튼 핸들러
-                currentPage(1)로 초기화
-                
-                nameOfFood초기화
-            음식 용량 핸들러
+            useEffect
+                sotore의 searchedFood.data가 채워지면
+                컴포넌트 localState에 복사함
+                eg) localSearchedFood = [...storeSearchedFood]
 
-            음식 용량 단위 핸들러
+            음식 검색 버튼 핸들러 (nameOfFood, currentPage 참조)
+                currentPage(1)로 초기화
+                dispatch(searchFood(nameofFood))
+                nameOfFood초기화
+
+            음식 용량 핸들러(e, foodId) (localSearchedFood참조)
+                검색된 음식들의 결과는 1차로 storeSearchedFood에 저장되고
+                useEffect에 의해서 localSearchedFood에 storeSearchedFood 값이 deep copy된다
+                매개변수로 받은 foodId 와 같은 id를 갖는 
+                객체배열인 localSearchedFood 의 객체요소를 찾아
+                해당 객체의 key값이 qtt인 요소의 value를 input에 입력한 값으로 바꿈
+
+            음식 용량 단위 핸들러(e, foodId, oneServingWeight) (localSearchedFood 참조)
+                매개변수로 받은 foodId 로 localSearchedFood에서 객체를 찾아
+                선택(1serv or 1g)한 용량단위 의 값으로 
+                key(unit) 의 value를 변경. 
 
             검색창 닫을시 검색하했던 데이터 초기화
+                useEffect로 showSearchFood가 false값이면
+                localSearchedFood를 []로 초기화
 
-            사이드 차트 토글 버튼
+            사이드 차트 토글 버튼(boolean)
+                dispatch(사이드차트토글(boolean))
 
-            검색결과 페이지 핸들러
+            검색결과 페이지 핸들러(number)
+                매개변수로 받은 number값으로
+                setCurrentPage(number)
 
               보여지는 영역
                   <log_contents_down_myList>
@@ -48,7 +114,16 @@ homePage
                       <SearchFood/>
                       <SearchedFoodList/>
 
-    SideChartCont
+    #SideChartCont.js
+        user, currentDateNutrition.totalNutrition, sideChartEdditorHandler 참조한다
+        --기능 정리---
+          사용자의 현재 몸무게를 보여주고 날짜별로 수정할수있다
+          사용자의 목표 열량 수치를 정할수있다
+          사용자의 목표 열량 수치를 참조하여 선택한 날짜의 음식들의 영양성분의 합을
+          Bar 그래프 형식으로 비교해준다.
+          선택한 날짜의 음식들의 영양성분 비율을 Pie 그래프 형식으로 보여준다
+          
+
         weight, cal (useState)
         위 state controller (fn)
         
@@ -65,3 +140,35 @@ homePage
           dispatch(유저정보갱신)
           dispatch(initSideChartEditor) //토글창 닫기
           localState초기화
+
+          #SideChart.js
+              WeightEditor.js
+              CalEditor.js
+              ProgressBars.js
+                CalProgress
+                CarbProgress
+                ProteinProgress
+                FatProgress
+
+
+  #Header.js
+
+      --주요기능--
+          날짜선택
+          회원가입, 로그인, 로그아웃 링크
+          선택한 날짜에 먹은 음식 리스트 구하기(foodList)
+          foodList를 참조해 데이터를 가공 -> 용량,용량단위를 확인후 영양성분 계산(calculatedNutrition)
+          계산된 calculatedNutrition를 참조하여 -> 해당 날짜의 총 영양성분을 구함(totalNutrition)
+          user <- foodList <- calculatedNutrition <- totalNutrition (참조 방향)
+          선택한 날짜의 해당 月에 섭취한 칼로리 정보 요청후 redux state에 저장
+
+
+  #Chart.js
+
+      --주요 기능--
+          Header에서 구한 monthCaloriesIntake 을 기반으로
+          선택한 날짜의 해당 月 의 일일 열량 섭취량을 Bar 그래프로 표현
+          사용자의 몸무게 변화를 과거부터 현재까지 Bar그래프로 표현
+
+
+

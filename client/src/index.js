@@ -14,15 +14,9 @@ const loaderUser = async () => {
   try {
     const user = localStorage.getItem('user');
     if (!user) return; // 로그인 상태가 아니라면 아무것도 안 함
-
-    // const token = JSON.parse(user).accessToken;
-    // const res = await axios.post('/api/auth/check', token);
-    // console.log(res);
-
     store.dispatch(login(JSON.parse(user))); //redux.user.user 를 설정
   } catch (e) {
     console.log(e);
-    console.log('localStorage is not working');
   }
 };
 loaderUser();

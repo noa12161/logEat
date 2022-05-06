@@ -9,3 +9,8 @@ export const registerApi = async (registerForm) => {
 export const loginApi = async (loginForm) => {
   return await axios.post('/api/auth/login', loginForm);
 };
+
+// jwt확인
+export const checkJwtApi = async () => {
+  return await axios.post('/api/auth/check');
+};

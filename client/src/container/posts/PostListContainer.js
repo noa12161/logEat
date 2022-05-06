@@ -10,6 +10,7 @@ import qs from 'qs';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllPosts } from '../../redux/posts/postsSlice';
 import { initPost } from '../../redux/post/postSlice';
+import { CircularProgress } from '@mui/material';
 
 /*
   첫 렌더링시 모든 포스트 조회
@@ -41,10 +42,12 @@ const PostListContainer = () => {
   }, [dispatch, deleteSuccess, queryString]);
 
   return (
-    <div>
+    <div style={{ height: '100%' }}>
       {user && <WritePost user={user} />}
       {isLoading ? (
-        <div>Loading....</div>
+        <div style={{ height: '100%' }} className="jcac">
+          <CircularProgress />
+        </div>
       ) : (
         <PostLists posts={posts} dispatch={dispatch} />
       )}
