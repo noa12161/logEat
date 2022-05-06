@@ -134,7 +134,6 @@ const foodSlice = createSlice({
       state.monthCaloriesIntake.err.status = false;
     },
     [fnMonthCalIntake.fulfilled]: (state, action) => {
-      console.log('sucees');
       state.monthCaloriesIntake.isFetching = false;
       state.monthCaloriesIntake.data = action.payload.response;
       state.monthCaloriesIntake.currentMonth = action.payload.currentMonth;

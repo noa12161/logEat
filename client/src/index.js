@@ -8,7 +8,6 @@ import { BrowserRouter } from 'react-router-dom';
 import { store } from './redux/store.js';
 import { Provider } from 'react-redux';
 import { login } from './redux/user/userSlice';
-
 //로그인 후 페이지 새로고침 해도 로그인 유지하게 해주는 fn()
 const loaderUser = async () => {
   try {

@@ -59,7 +59,6 @@ const Header = ({ user }) => {
   useEffect(() => {
     if (!user) return;
     dispatch(changeDate(startDate.toLocaleDateString()));
-    console.log('login??');
   }, [dispatch, startDate, user]);
 
   // user 정보가 변할때마다 foodList 갱신...

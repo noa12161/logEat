@@ -45,7 +45,7 @@ const writeSlice = createSlice({
   name: 'write',
   initialState,
   reducers: {
-    initWrite: (state) => initialState,
+    initWrite: (state) => ({ ...initialState, isLoading: state.isLoading }),
     setPost: (state, { payload: post }) => {
       return {
         ...state,
