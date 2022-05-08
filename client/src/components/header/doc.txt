@@ -1,0 +1,52 @@
+--Header 컴포넌트 역할--
+
+--주요기능--
+          날짜선택
+          회원가입, 로그인, 로그아웃 링크
+          선택한 날짜에 먹은 음식 리스트 구하기(foodList)
+          foodList를 참조해 데이터를 가공 -> 용량,용량단위를 확인후 영양성분 계산(calculatedNutrition)
+          계산된 calculatedNutrition를 참조하여 -> 해당 날짜의 총 영양성분을 구함(totalNutrition)
+          user <- foodList <- calculatedNutrition <- totalNutrition (참조 방향)
+          선택한 날짜의 해당 月에 섭취한 칼로리 정보 요청후 redux state에 저장
+
+props: user
+
+states: monthCaloriesIntake, prevUser, date, foodList, currentDateNutrion
+
+
+--함수--
+
+  로그아웃 함수
+
+  로그인 했을시 오늘 날짜 설정
+
+  user 정보가 변할때마다 foodList 갱신... ( user 참조 )
+
+  currentDateNutrion.calculatedNutrition 구하기 ( foodList 참조 )
+
+  currentDateNutrion.totalNutrition 구하기 ( currentDateNutrion.calculatedNutrition 참조)
+
+  첫 렌더링시 prevUser 설정
+
+
+
+선택 날짜의 월간 일일 열량 구하는 함수 동작 방식
+
+  1. dispatch할때 쓰일 객체(form 이라고 부르겠다) 생성 : {
+                                선택날짜의 해당 월 일수, //eg) 5월 선택 -> 31
+                                선택날짜의 전체 날짜 정보,
+                                유저 정보 (user),
+                                선택 날짜의 월
+                              }
+
+  2. dispatch(fnMonthCalIntake( form ))
+
+      fnMonthCalIntake는 thunk 함수다
+        a. 함수가 실행되는 시점의 user정보를 prevuser에 저장한다.
+        b. response = getArrayOfMonthCaloriesIntake( form )
+
+            --getArrayOfMonthCaloriesIntake--
+                1. 빈배열 선언 (ArrayOfMonthCaloriesIntake)
+                2. form.선택날짜의 해당 월 일수 만큼 초기값 1부터 for문 실행
+                    a. "2022. 4. 22." 형식의 문자열 생성.
+                    b.  a에서 만든 문자열과 form.유저정보 를 담아서 서버에 요청 ()

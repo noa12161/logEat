@@ -105,20 +105,19 @@ const Header = ({ user }) => {
     dispatch(setPrevUser(user));
   }, []);
 
+  // 한달 일일섭취량 구하기...
   useEffect(() => {
-    // !user || logout 하면..
     if (!user) return dispatch(initializeFoodSlice());
     if (monthCaloriesIntake.isFetching && user === prevUser) return;
-    // 선택한 날짜의 해당 month 날짜별 열량 구하기..
+    // 같은달을 이미 계산 했고..
+    // user의 정보가 변경되지 않았다면..return
+    // eg) 유저가 음식을 추가하면 다시 계산함... month 단위가 변하면 다시 계산...
+    if (
+      startDate.getMonth() + 1 === monthCaloriesIntake.currentMonth &&
+      user === prevUser
+    )
+      return;
     const fn = async () => {
-      // 같은달을 이미 계산 했고..
-      // user의 정보가 변경되지 않았다면..return
-      // eg) 유저가 음식을 추가하면 다시 계산함... month 단위가 변하면 다시 계산...
-      if (
-        startDate.getMonth() + 1 === monthCaloriesIntake.currentMonth &&
-        user === prevUser
-      )
-        return;
       const formForMonthCalories = {
         daysInMonth: configDaysinMonth(startDate),
         fullDate: startDate,

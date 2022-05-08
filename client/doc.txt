@@ -172,3 +172,30 @@ homePage
 
 
 
+
+
+HomePage
+    PostPage
+        PostListContainer
+            WritePost
+            PostLists
+            PaginationContainer
+        PostContainer
+        WritePage
+
+
+
+
+--이미지 업로드--
+    --server--
+      schema: image:{type:string}
+      multer 설정
+          destination: ./client/public/uploads
+          fileName: file.originalname+ '-' + new Date()
+    
+    --client--
+        // encType 설정해주는것이 중요하다
+        <form onSubmit={handleSubmit} encType="multipart/form-data">
+
+          --이미지 불러올떄--
+              
