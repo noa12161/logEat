@@ -67,6 +67,9 @@
                    Tag (태그)
                   ImageUploadContainer
                     ImageBtn (이미지 업로드)
+                      input (type = file)
+                      Preview (미리보기)
+
                   WriteUpdateBtnContainer
                     WriteBtn (수정 or 등록)
                 

@@ -5,9 +5,8 @@ import { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 // 리덕스
 import { useDispatch, useSelector } from 'react-redux';
-import { deletePost, getPost, initPost } from '../redux/post/postSlice';
+import { getPost, initPost } from '../redux/post/postSlice';
 import { CircularProgress } from '@mui/material';
-// import { setPost } from '../redux/post/writeSlice';
 
 const PostContainer = () => {
   const dispatch = useDispatch();
@@ -16,6 +15,8 @@ const PostContainer = () => {
 
   const { postId } = params;
 
+  // 파라미터값으로 포스트를 조회하고 성공시 redux.state에 post에대한 정보 저장
+  // 이 페이지를 나가면 redux.state.post 초기화 (cleanup)
   useEffect(() => {
     dispatch(getPost(postId));
     return () => {
@@ -23,25 +24,7 @@ const PostContainer = () => {
     };
   }, [dispatch, postId]);
 
-  //  수정 삭제 함수
   const navigate = useNavigate();
-  // const onClickEdit = () => {
-  //   if (!post) return;
-  //   if (window.confirm('정말 수정 하시겠습니까?')) {
-  //     dispatch(setPost(post));
-  //     navigate(`/posts/write`);
-  //   } else {
-  //     return;
-  //   }
-  // };
-  // const onClickDelete = () => {
-  //   if (!post) return;
-  //   if (window.confirm('정말 삭제 하시겠습니까?')) {
-  //     dispatch(deletePost(postId));
-  //   } else {
-  //     return;
-  //   }
-  // };
   // 삭제 성공시 전체 게시글로 이동.
   useEffect(() => {
     if (!deleteSuccess) return;
@@ -52,16 +35,11 @@ const PostContainer = () => {
     <div className="post_container">
       {/* 내 글이면 수정/삭제 컴포넌트 */}
       {!post || isLoading ? (
-        <div className="jcac" style={{ height: '100%' }}>
+        <div className="jcac" style={{ height: '300px' }}>
           <CircularProgress />
         </div>
       ) : (
-        <PostItem
-          post={post}
-          // onClickEdit={onClickEdit}
-          // onClickDelete={onClickDelete}
-          dispatch={dispatch}
-        />
+        <PostItem post={post} dispatch={dispatch} />
       )}
     </div>
   );

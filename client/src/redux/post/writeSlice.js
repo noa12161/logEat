@@ -4,8 +4,8 @@ import { createPostApi, updatePostApi } from '../../lib/api/posts';
 const initialState = {
   title: '',
   message: '',
-  file: '',
-  fileName: '',
+  fileUrl: '',
+  fileBase64: '',
   tags: [],
   postId: null,
   responsePost: null,
@@ -15,9 +15,9 @@ const initialState = {
 // 새 게시글 등록
 export const writePost = createAsyncThunk(
   'write/writePost',
-  async (form, { rejectWithValue }) => {
+  async (formData, { rejectWithValue }) => {
     try {
-      const res = await createPostApi(form);
+      const res = await createPostApi(formData);
       const newPost = res.data;
       return newPost;
     } catch (e) {
@@ -31,7 +31,7 @@ export const updatePost = createAsyncThunk(
   'write/updatePost',
   async (payload, { rejectWithValue }) => {
     try {
-      const res = await updatePostApi(payload.form, payload.postId);
+      const res = await updatePostApi(payload.formData, payload.postId);
       const updatedPost = res.data;
       return updatedPost;
     } catch (e) {
@@ -51,8 +51,7 @@ const writeSlice = createSlice({
         ...state,
         title: post.title,
         message: post.title,
-        file: post.image ? post.image.file : '',
-        fileName: post.image ? post.image.fileName : '',
+        fileUrl: post.image ? post.image.imageUrl : '',
         tags: post.tags ? post.tags : [],
         postId: post._id,
       };

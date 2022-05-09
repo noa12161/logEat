@@ -1,5 +1,6 @@
 import { sanitizeAll, sanitizeAndShorten } from "../../functions/sanitize.js";
 import Post from "../../models/Post.js";
+import cloudinary from "../../middleWare/cloudinary.js";
 
 // postId로 게시글 조회
 export const getPostById = async (req, res, next) => {
@@ -67,13 +68,17 @@ export const getPost = (req, res) => {
   제목, 내용, 이미지?, 태그?, 유저정보(req.user 사용)
 */
 export const createPost = async (req, res) => {
-  const { file, fileName, ...others } = req.body;
-  const postForm = { ...others };
-  const image = { file, fileName };
+  console.log(req.file);
+  console.log(req.body);
   try {
+    const result = await cloudinary.uploader.upload(req.file.path);
+    console.log(result);
     const newPost = await Post.create({
-      ...postForm,
-      image,
+      ...req.body,
+      image: {
+        imageUrl: result.secure_url,
+        imageId: result.public_id,
+      },
       user: {
         _id: req.user._id,
         username: req.user.username,
@@ -89,7 +94,11 @@ export const createPost = async (req, res) => {
 // 포스트 삭제
 export const deletePost = async (req, res) => {
   try {
+    const post = await Post.findById(req.params.postId);
+    await cloudinary.uploader.destroy(post.image.imageId);
+
     const deletedPost = await Post.findByIdAndDelete(req.params.postId);
+
     res.status(200).send(deletedPost);
   } catch (e) {
     console.log(e);
@@ -99,14 +108,23 @@ export const deletePost = async (req, res) => {
 
 //포스트 수정
 export const updatePost = async (req, res) => {
+  console.log(req.file.path);
   const { postId } = req.params;
-  const { file, fileName, ...others } = req.body;
-  const postForm = { ...others };
-  const image = { file, fileName };
   try {
+    const post = await Post.findById(postId);
+    // cloudinary 삭제후 업로드 (수정)
+    await cloudinary.uploader.destroy(post.image.imageId);
+    const result = await cloudinary.uploader.upload(req.file.path);
+
     const updatedPost = await Post.findByIdAndUpdate(
       postId,
-      { ...postForm, image },
+      {
+        ...req.body,
+        image: {
+          imageUrl: result.secure_url,
+          imageId: result.public_id,
+        },
+      },
       {
         new: true,
       }

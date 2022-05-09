@@ -13,8 +13,8 @@ const postSchema = new Schema(
       required: true,
     },
     image: {
-      fileName: String,
-      file: String,
+      imageUrl: String,
+      imageId: String,
     },
     tags: [String],
     user: {

@@ -2,8 +2,7 @@ import React from 'react';
 import Editor from '../../components/write/Editor';
 import { useSelector, useDispatch } from 'react-redux';
 import { useCallback } from 'react';
-import { initWrite, setValue } from '../../redux/post/writeSlice';
-import { useEffect } from 'react';
+import { setValue } from '../../redux/post/writeSlice';
 
 const EditorContainer = () => {
   const dispatch = useDispatch();
@@ -17,12 +16,6 @@ const EditorContainer = () => {
     (payload) => dispatch(setValue(payload)),
     [dispatch],
   );
-
-  useEffect(() => {
-    return () => {
-      dispatch(initWrite());
-    };
-  }, []);
 
   return (
     <Editor onChangeValue={onChangeValue} title={title} message={message} />
