@@ -1,6 +1,7 @@
 import { Router } from "express";
 import * as postCtrl from "./posts.ctrl.js";
 import checkLoggedIn from "../../middleWare/checkLoggedIn.js";
+import { upload } from "../../middleWare/multer.js";
 const router = Router();
 
 /*  적용된 미들웨어
@@ -14,7 +15,7 @@ router.get("/", postCtrl.getAllPosts);
 router.get("/:postId", postCtrl.getPostById, postCtrl.getPost);
 
 // 포스트 생성 (로그인 필요)
-router.post("/", checkLoggedIn, postCtrl.createPost);
+router.post("/", checkLoggedIn, upload.single("image"), postCtrl.createPost);
 
 // 포스트 삭제 (로그인 필요) + (내 포스트 확인)
 router.delete(
@@ -31,6 +32,7 @@ router.put(
   checkLoggedIn,
   postCtrl.getPostById,
   postCtrl.checkMyPost,
+  upload.single("image"),
   postCtrl.updatePost
 );
 

@@ -1,8 +1,8 @@
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import UpdateDelete from '../post/UpdateDelete';
-import { useRef } from 'react';
 import parse from 'html-react-parser';
+// 리덕스
+import { useSelector } from 'react-redux';
 import { setPost } from '../../redux/post/writeSlice';
 import { deletePost } from '../../redux/post/postSlice';
 
@@ -18,7 +18,6 @@ const PostItem = ({ post, dispatch }) => {
   };
   const onClickTag = (tag) => {
     navigate(`/posts?tag=${tag}`);
-    // window.location.reload();
   };
 
   const onClickEdit = (post) => {
@@ -60,9 +59,9 @@ const PostItem = ({ post, dispatch }) => {
       </div>
       <div className="postItem_body_container">
         {/* 이미지 */}
-        {post.image?.file && (
+        {post.image?.imageUrl && (
           <div className="postItem_body_image">
-            <img src={post.image.file} alt="fakeImage" />
+            <img src={post.image.imageUrl} alt="fakeImage" />
           </div>
         )}
         {/* 내용 */}

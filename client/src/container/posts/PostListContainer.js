@@ -17,7 +17,7 @@ import { CircularProgress } from '@mui/material';
   query 를 state로 설정해서 qury 변경시마다 qury값으로 포스트 조회
   응답받은 값을 redux posts 에 저장
   리덕스에서 불러온 posts를 PostList 컴포넌트에 전달
-                  user를 전달 user 있으면 글쓰기 기능 가능...            
+  user를 전달 user 있으면 글쓰기 기능 가능...            
 */
 
 const PostListContainer = () => {
@@ -31,10 +31,13 @@ const PostListContainer = () => {
   const query = qs.parse(search, { ignoreQueryPrefix: true });
   const queryString = qs.stringify(query);
 
+  // 초기에 모든 포스트를 불러오고
+  // 쿼리값이 바뀌면 해당 쿼리로 다시 서버에 데이터 요청
   useEffect(() => {
     dispatch(getAllPosts(queryString));
   }, [search, dispatch, queryString]);
 
+  // 포스트 삭제 성공시 다시 서버에 데이터 요청해서 게시글 리스트 새로고침.
   useEffect(() => {
     if (!deleteSuccess) return;
     dispatch(initPost());
@@ -42,10 +45,10 @@ const PostListContainer = () => {
   }, [dispatch, deleteSuccess, queryString]);
 
   return (
-    <div style={{ height: '100%' }}>
+    <div>
       {user && <WritePost user={user} />}
       {isLoading ? (
-        <div style={{ height: '100%' }} className="jcac">
+        <div style={{ height: '300px' }} className="jcac">
           <CircularProgress />
         </div>
       ) : (

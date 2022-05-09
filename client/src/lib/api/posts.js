@@ -16,8 +16,8 @@ export const getPostApi = async (postId) => {
   tags
 } */
 // 포스트 생성
-export const createPostApi = async (form) => {
-  return await axios.post(`/api/posts`, form);
+export const createPostApi = async (formData) => {
+  return await axios.post(`/api/posts`, formData);
 };
 
 // 포스트 삭제
@@ -26,6 +26,6 @@ export const deletePostApi = async (postId) => {
 };
 
 //포스트 수정
-export const updatePostApi = async (form, postId) => {
-  return await axios.put(`/api/posts/${postId}`, form);
+export const updatePostApi = async (formData, postId) => {
+  return await axios.put(`/api/posts/${postId}`, formData);
 };

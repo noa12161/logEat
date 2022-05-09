@@ -1,0 +1,109 @@
+--v2.2흐름--
+  --POST--
+    redux.state에
+    {
+      title,
+      message
+      tags,
+      file (파일base64),
+      fileName (파일명)
+    }
+    
+    형식으로 저장
+
+    --input value onChange
+        dispatch 해서 state 값을 바꿈
+        file타입 input은 중간 함수에서 base64형식, 파일명 만들어서 dispatch
+
+
+    --form onSubmit
+      등록,수정 컴포넌트에서
+      redux.state 가져와서 해당 값들로 thunk dispatch (form)
+      thunk에서 api함수(form) 호출
+
+    --이미지 등록시 미리보기 기능--
+      redux.sate.file 이 base64 형식으로 저장되서
+      등록되면 바로바로 볼수있었음.
+
+
+  --UPDATE--
+    게시글 상단에 위치한 수정 버튼 클릭
+    PostList -> PostItem -> UpdateDelete
+    dispatch(setPost(post))
+      PostItem이 받은 post 값으로 writeSlice 값들을 초기화
+      그리고 navigate(WritePage)
+    여기서부터 POST와의 차이는 초기값이 설정되있나 아닌가의 차이와
+    thunk dispatch할때 postId를 같이 주는거의 차이를 제외하고는 동일함
+
+
+
+--v2.3 흐름--
+  --POST--
+    redux.state에
+    {
+      title,
+      message
+      tags,
+      fileUrl
+      fileBase64(이미지 등록 클릭시 미리보기용.),
+    }
+
+    #WrirPage에서 localState로 file 선언 (이미지용) // redux에는 file객체를 저장 못해서
+    localState에다가 저장해야함
+    1. ImageUploadContainer props로 넘겨주고
+    2. WriteUpdateBtnContainer props로 넘겨주고
+
+
+    --input value onChange
+      dispatch 해서 state 값을 바꿈
+      file타입 input은 중간 함수에서 base64형식 만들어서 dispatch (미리보기용)
+
+    --form onSubmit
+      WriteUpdateBtnContainer 컴포넌트에서
+      redux.state, props.file 가져와서 해당 값들로 formData 만듬.
+      thunk dispatch (formData)
+      thunk에서 api함수(form) 호출
+
+    --이미지 업로드시 미리보기--
+      등록인 경우에 redux.state.fileUrl이 없으니까
+      img 태그의 src를 file input이 onChange되는 경우 값이 설정되는 fileBase64로
+      설정하고
+      
+      수정인 경우에 redux.state.fileUrl이 있으니까
+      img태그의 src를 redux.state.fileUrl로 설정
+
+      eg)
+      fileBase64 가 있다는건 등록페이지 이거나
+      수정 페이지에서 새로운 이미지를 업로드 했다는 뜻
+        --경우의 수--
+        1. 새 글 쓰기
+            fileBase64참조
+        2. 글 수정하기
+            a. 이미지가 있던 글
+                fileUrl 참조
+            b. 이미지가 없던 글
+            c. 다른 이미지로 수정했을경우.
+                fileBase64 참조
+      {
+        redux.state.fileBase64 || redux.state.fileUrl &&
+        <img src={
+          redux.state.fileBase64
+          ? redux.state.fileBase64
+          : redux.state.fileUrl
+        }
+      }
+
+      --POST 성공시--
+      1. 서버에서 새로 만든 post에 대한 정보를 반환
+         redux.state.responsePost에 반환된 post의 정보 저장
+      2. WriteUpdateBtnContainerd에서 useEffect로 responsePost 참조하고있다가
+         값이 채워지면 즉 POST 성공하면
+         navigate(`/posts/post/${responsePost._id}`)
+      3. navigate로 인하여 WritePage를 벗어나면
+         useEffect의 cleanup함수로 writSlice초기화
+
+      --개발 순서--
+      1. WritePage localState 생성
+      2. redux.state 수정
+      3. formData 변환 함수 생성
+      4. onSubmit, onChange 함수 수정
