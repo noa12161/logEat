@@ -1,4 +1,4 @@
-import axios from 'axios';
+import { calculateCal } from './calculate';
 
 //해당 month 에 몇일있나 확인 하는 함수
 export const configDaysinMonth = (date) => {
@@ -8,58 +8,28 @@ export const configDaysinMonth = (date) => {
   return daysInMonth;
 };
 
-// 용량단위 확인 함수
-const checkUnit = (unit, servSizeWeight) => {
-  return unit === servSizeWeight;
-};
+// 전달받은 날짜의 해당 월, 해당 월 일일 열량 반환
+export const getArrayOfMonthCaloriesIntake = async (user, startDate) => {
+  const monthCalIntake = [];
+  const splited = startDate.toLocaleDateString().split('.');
+  const month = parseInt(splited[1]);
+  const strMonth = '' + month;
+  const yearMonth = splited[0] + '.' + splited[1] + '.';
+  const daysInMonth = configDaysinMonth(startDate);
 
-const convertToFixedNum = (num) => {
-  return parseInt(num);
-};
-
-// 전달받은 days만큼 요청해서 응답값을 배열에 push 한다음 배열을 return 하는 함수
-export const getArrayOfMonthCaloriesIntake = async (form) => {
-  const ArrayOfMonthCaloriesIntake = [];
-  for (let i = 1; i <= form.daysInMonth; i++) {
-    const year = form.fullDate.getFullYear();
-    const month = form.fullDate.getMonth() + 1;
-    const date = i;
-    let cal = 0;
-    const dateString = year + '. ' + month + '. ' + date + '.';
-    // console.log(dateString);
-    const res = await axios.post('/api/food/getByDate', {
-      username: form.user.username,
-      date: dateString,
-    });
-    const foodList =
-      res.data.length > 0 ? res.data[0].foodData[0].meals : 'no data';
-
-    //해당 날짜에 추가된 음식이 없을시...
-    if (foodList === 'no data') {
-      ArrayOfMonthCaloriesIntake.push({
-        fullDate: dateString,
-        date: i,
-        cal: form.user.currentTargetCalories,
-      });
+  for (let i = 1; i <= daysInMonth; i++) {
+    const day = ` ${i}.`;
+    const fullDate = yearMonth + day;
+    // 해당 날짜의 음식리스트
+    const data = user.foodData.find((food) => food.date === fullDate);
+    // 해당 날짜에 먹은 음식이 없다면
+    if (data === undefined) {
+      monthCalIntake.push({ cal: user.currentTargetCalories, date: i });
       continue;
     }
-
-    //해당 날짜에 추가된 음식이 있을시...
-    foodList.forEach((f) => {
-      const isServ = checkUnit(f.unit, f.servSizeWeight);
-      // 1회제공량일경우....
-      if (isServ) {
-        cal = cal + f.oneServCal * f.qtt;
-      } else {
-        //1g당 일경우...
-        cal = cal + (f.oneServCal / f.servSizeWeight) * f.qtt;
-      }
-    });
-    ArrayOfMonthCaloriesIntake.push({
-      fullDate: dateString,
-      date: i,
-      cal: convertToFixedNum(cal),
-    });
+    const sumCal = data.meals.reduce((prv, cur) => prv + calculateCal(cur), 0);
+    monthCalIntake.push({ cal: sumCal, date: i });
   }
-  return ArrayOfMonthCaloriesIntake;
+  console.log(monthCalIntake);
+  return { monthCalIntake, strMonth };
 };

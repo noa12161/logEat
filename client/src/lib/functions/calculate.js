@@ -52,3 +52,11 @@ export const getTotalNutrition = (calculatedNutrition) => {
     ),
   };
 };
+
+export const calculateCal = (meal) => {
+  const isServ = checkUnit(meal.unit, meal.servSizeWeight);
+  if (isServ) {
+    return convertToFixedNum(meal.oneServCal * meal.qtt);
+  }
+  return convertToFixedNum((meal.oneServCal / meal.servSizeWeight) * meal.qtt);
+};

@@ -196,6 +196,7 @@ router.post("/getByDate", async (req, res) => {
         // _id: 0,
       }
     );
+    console.log(data);
     res.status(200).send(data);
   } catch (e) {
     res.status(500).send(e);

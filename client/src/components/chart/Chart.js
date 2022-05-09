@@ -5,30 +5,29 @@ import LineChart from './LineChart';
 // 리덕스
 import { useSelector } from 'react-redux';
 import { formatDateString } from '../../lib/functions/common';
-import { CircularProgress } from '@mui/material';
 
 const Chart = ({ user }) => {
-  const { monthCaloriesIntake } = useSelector((state) => state.food);
+  const { monthData } = useSelector((state) => state.food);
   const [monthlyCaloriesChartData, setMonthlyCaloriesChartData] =
     useState(null);
   const [bodyWeightChartData, setBodyWeightChartData] = useState(null);
   const [sortBWByDate, setSortBWByDate] = useState([]);
 
   useEffect(() => {
-    if (!monthCaloriesIntake.data || monthCaloriesIntake.isFetching) return;
+    if (!monthData) return;
     setMonthlyCaloriesChartData({
-      labels: monthCaloriesIntake.data.map((d) => d.date),
+      labels: monthData.data.map((d) => d.date),
       datasets: [
         {
-          label: `${monthCaloriesIntake.currentMonth}월 섭취 열량 차트`,
-          data: monthCaloriesIntake.data.map((d) => d.cal),
+          label: `${monthData.currentMonth}월 섭취 열량 차트`,
+          data: monthData.data.map((d) => d.cal),
           backgroundColor: ['red', 'blue', 'yellow', 'purple'],
           borderColor: 'black',
           borderWidth: 1,
         },
       ],
     });
-  }, [monthCaloriesIntake]);
+  }, [monthData]);
 
   useEffect(() => {
     const copyData = [...user.bodyWeight];
@@ -57,19 +56,11 @@ const Chart = ({ user }) => {
   return (
     <div className="Chart jcac">
       {/* <button onClick={addField}>테스트</button> */}
-      {monthCaloriesIntake.data && !monthCaloriesIntake.isFetching ? (
-        <div className="monthly_calories_chartContainer">
-          <LineChart
-            chartData={
-              monthlyCaloriesChartData ? monthlyCaloriesChartData : null
-            }
-          />
-        </div>
-      ) : (
-        <div style={{ flex: '0.5' }} className="jcac">
-          <CircularProgress />
-        </div>
-      )}
+      <div className="monthly_calories_chartContainer">
+        <LineChart
+          chartData={monthlyCaloriesChartData ? monthlyCaloriesChartData : null}
+        />
+      </div>
       <div className="monthly_calories_chartContainer">
         <LineChart
           chartData={bodyWeightChartData ? bodyWeightChartData : null}

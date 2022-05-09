@@ -50,3 +50,71 @@ states: monthCaloriesIntake, prevUser, date, foodList, currentDateNutrion
                 2. form.선택날짜의 해당 월 일수 만큼 초기값 1부터 for문 실행
                     a. "2022. 4. 22." 형식의 문자열 생성.
                     b.  a에서 만든 문자열과 form.유저정보 를 담아서 서버에 요청 ()
+                    c.  서버는 유저정보와 a의 문자열의 날짜를 참조하여 문서 반환 (해당 날짜에 문서가 있을수도 없을수도 있음)
+                    d.  c에서 받은 문서서가 없다면 {
+                                                  fullDate: dateString,
+                                                  date: i,
+                                                  cal: form.user.currentTargetCalories,
+                                                }를 배열에 push
+                    
+                    e.  있다면  {
+                                  fullDate: a 의 문자열,
+                                  date: i,
+                                  cal: 응답 받은 문서의 음식들의 총 열량 합
+                                } push
+                3. 채워진 ArrayOfMonthCaloriesIntake return
+        c. return { response: ArrayOfMonthCaloriesIntake, currentMonth: 선택 날짜의 월}
+        d. thunk fulfilled일시 sate.data = response
+
+    즉....
+      1. 컴포넌트에서 form객체를 만들고
+      2. 해당 fomr으로 thunk를 dispatch하고
+      3. thunk안에서 한달일일열량섭취구하는 함수 인자에 form을 넘겨주면서 호출하고
+      4. 한달일일열량섭취구하는 함수는 form에 들어있는 정보를 기반으로 for문을 돌아서 객체배열을 반환
+      5. 응답받은 데이터를 redux state에 저장.
+
+      ---문제---
+        4번 과정에서 선택 월의 일수만큼 서버에 요청을 해서 과부하가 걸림
+
+      --해결방법--
+        
+        -유저의 정보를 이용해보기-
+          전체 기간의 음식 정보는 user.user.foodData에 있다
+          eg) 선택한 날짜가 '2022. 5. 9.' 이다
+              나는 2022. 5. 1. ~ 2022. 5. 31. 까지의 음식 일일 열량을 얻고싶은거다
+
+
+              구해야하는 것들: {
+                선택날짜의 월:
+                일일열량배열
+              }
+          
+          -선택날짜의 월 구하기-
+          
+            const splited = day.split('.')
+            const month = splited[1]
+            console.log(month) // ' 5'
+            const intMonth = parseInt(month) 
+            console.log(intMonth) // 5
+            const strMonth = ""+intMonth
+            console.log(strMonth)  // '5'
+
+          -선택 날짜의 월의 일일 열량 구하기-
+
+            startData는 날짜를 선택하면 선택 날짜의 Date객체가 초기화된다.
+            만들어둔 configDaysinMonth(startData) 하면 선택 날짜의 월의 일수 구해짐
+
+            {
+              const yearMonth = '2022. 5.'
+            
+              for(i=1, i>=daysInMonth, i++) {
+                const day = ` ${i}.`
+                cont fullDate = yearMonth + day
+                const oneDayFoods = user.foodData.find(
+                  foods => foods.date === fullDate
+                  ? foods
+                )
+
+              }
+            
+            }

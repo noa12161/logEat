@@ -1,7 +1,6 @@
 import './header.css';
 import React, { useState, useEffect, useRef, forwardRef } from 'react';
 import axios from 'axios';
-import { configDaysinMonth } from '../../lib/functions/dateFunctions';
 
 // date-picker
 import DatePicker from 'react-datepicker';
@@ -10,24 +9,24 @@ import { ko } from 'date-fns/esm/locale';
 import { Link } from 'react-router-dom';
 // 리덕스
 import { useSelector, useDispatch } from 'react-redux';
-import { logout, changeDate, setPrevUser } from '../../redux/user/userSlice';
+import { logout, changeDate } from '../../redux/user/userSlice';
 import {
   initializeFoodSlice,
-  fnMonthCalIntake,
   initializeCurrentDateNutrition,
   setCalculatedNutrition,
   setFoodList,
   setTotalNutrition,
+  setMonthData,
 } from '../../redux/foods/foodSlice';
 import {
   getTotalNutrition,
   getSumOfNutrition,
 } from '../../lib/functions/calculate';
+import { getArrayOfMonthCaloriesIntake } from '../../lib/functions/dateFunctions.js';
 
 const Header = ({ user }) => {
   const dispatch = useDispatch();
-  const { monthCaloriesIntake } = useSelector((state) => state.food);
-  const { prevUser } = useSelector((state) => state.user);
+  const { monthData } = useSelector((state) => state.food);
   const { date, foodList, currentDateNutrition } = useSelector(
     ({ user, food }) => {
       return {
@@ -37,6 +36,7 @@ const Header = ({ user }) => {
       };
     },
   );
+  const [prevUser, setPrevUser] = useState(null);
 
   //date picker
   const dateRef = useRef();
@@ -99,42 +99,24 @@ const Header = ({ user }) => {
     dispatch(setTotalNutrition(totalNutrition));
   }, [currentDateNutrition.calculatedNutrition, dispatch]);
 
-  // 첫 렌더링시 prevUser 설정
+  // 선택한 날짜의 해당 월 일일 열량 섭취량 계산
   useEffect(() => {
     if (!user) return;
-    dispatch(setPrevUser(user));
-  }, []);
-
-  // 한달 일일섭취량 구하기...
-  useEffect(() => {
-    if (!user) return dispatch(initializeFoodSlice());
-    if (monthCaloriesIntake.isFetching && user === prevUser) return;
-    // 같은달을 이미 계산 했고..
-    // user의 정보가 변경되지 않았다면..return
-    // eg) 유저가 음식을 추가하면 다시 계산함... month 단위가 변하면 다시 계산...
     if (
-      startDate.getMonth() + 1 === monthCaloriesIntake.currentMonth &&
+      parseInt(monthData.currentMonth) === startDate.getMonth() + 1 &&
       user === prevUser
     )
       return;
-    const fn = async () => {
-      const formForMonthCalories = {
-        daysInMonth: configDaysinMonth(startDate),
-        fullDate: startDate,
+    const fetchData = async () => {
+      const { monthCalIntake, strMonth } = await getArrayOfMonthCaloriesIntake(
         user,
-        currentMonth: startDate.getMonth() + 1,
-      };
-      dispatch(fnMonthCalIntake(formForMonthCalories));
+        startDate,
+      );
+      dispatch(setMonthData({ month: strMonth, data: monthCalIntake }));
+      setPrevUser(user);
     };
-    fn();
-  }, [
-    startDate,
-    dispatch,
-    monthCaloriesIntake.currentMonth,
-    user,
-    prevUser,
-    monthCaloriesIntake.isFetching,
-  ]);
+    fetchData();
+  }, [startDate, user, prevUser, monthData.currentMonth, dispatch]);
 
   return (
     <div className="Header">
