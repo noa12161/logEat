@@ -27,7 +27,7 @@ const Log = ({
   return (
     <div className="Log">
       <div className="log_wrapper">
-        {windowWidth <= 1024 && (
+        {windowWidth <= 1024 && user && (
           <div className="sideChart_toggle_button">
             <InsertChartOutlinedRounded
               style={{ fontSize: '3rem', cursor: 'pointer' }}
