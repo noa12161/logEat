@@ -27,11 +27,10 @@ export const searchFood = createAsyncThunk(
     try {
       const response = await searchFoodApi(nameOfFood);
       const data = response.data;
-
       return data;
     } catch (e) {
-      console.log(e);
-      return rejectWithValue(e.response.data);
+      console.log({ e });
+      return rejectWithValue(e.response);
     }
   },
 );
@@ -107,7 +106,9 @@ const foodSlice = createSlice({
       state.searchedFood.data = action.payload;
     },
     [searchFood.rejected]: (state, action) => {
-      alert('음식을 찾지 못했습니다..');
+      if (action.payload.status === 500 || action.payload.status === 503)
+        alert('공공데이터포털 게이트웨이 내부 서비스 오류.');
+      else if (action.payload.status === 404) alert('음식을 찾지 못했습니다..');
       state.searchedFood.data = null;
       state.searchedFood.isLoading = false;
       state.searchedFood.err.status = true;
