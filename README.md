@@ -160,6 +160,34 @@
 
 ---
 
+- ## v2.4 (오류, 시스템 개선)
+
+  - 게시글 작성할시에 tags에 한개 이상의 값을 추가할시 배열로 인식되어 formData에 append 할때<br> JSON.stringify(tags) 해서 append.
+
+  - 게시글에 이미지가 있는 경우와 없는 경우를 나눠서 CRUD 구현.<br>
+    eg)<br>
+
+  ```javascript
+  let result = null;
+  // 이미지와 함께 업로드 할경우 값을 넣어줌
+  if (req.file) {
+    result = await cloudinary.uploader.upload(req.file.path);
+  }
+  const newPost = await Post.create({
+    ...form,
+    image: result
+      ? {
+          imageUrl: result.secure_url,
+          imageId: result.public_id,
+        }
+      : "",
+    user: {
+      _id: req.user._id,
+      username: req.user.username,
+    },
+  });
+  ```
+
 <br>
 <br>
 

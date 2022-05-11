@@ -40,8 +40,9 @@ const WriteUpdateBtnContainer = ({ imageFile }) => {
     const formData = new FormData();
     formData.append('title', form.title);
     formData.append('message', form.message);
-    formData.append('tags', form.tags);
+    formData.append('tags', JSON.stringify(form.tags));
     formData.append('image', form.imageFile);
+    console.log(formData);
     return formData;
   };
 
