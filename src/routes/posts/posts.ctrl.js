@@ -67,14 +67,26 @@ export const getPost = (req, res) => {
   제목, 내용, 이미지?, 태그?, 유저정보(req.user 사용)
 */
 export const createPost = async (req, res) => {
+  const tags = JSON.parse(req.body.tags);
+  const form = {
+    ...req.body,
+    tags,
+  };
   try {
-    const result = await cloudinary.uploader.upload(req.file.path);
+    let result = null;
+    // 이미지와 함께 업로드 할경우
+    if (req.file) {
+      result = await cloudinary.uploader.upload(req.file.path);
+    }
+    // 이미지 없는 경우
     const newPost = await Post.create({
-      ...req.body,
-      image: {
-        imageUrl: result.secure_url,
-        imageId: result.public_id,
-      },
+      ...form,
+      image: result
+        ? {
+            imageUrl: result.secure_url,
+            imageId: result.public_id,
+          }
+        : "",
       user: {
         _id: req.user._id,
         username: req.user.username,
@@ -91,8 +103,10 @@ export const createPost = async (req, res) => {
 export const deletePost = async (req, res) => {
   try {
     const post = await Post.findById(req.params.postId);
-    await cloudinary.uploader.destroy(post.image.imageId);
-
+    // 이미지가 있는 경우
+    if (!post.image === "") {
+      await cloudinary.uploader.destroy(post.image.imageId);
+    }
     const deletedPost = await Post.findByIdAndDelete(req.params.postId);
 
     res.status(200).send(deletedPost);
@@ -104,21 +118,37 @@ export const deletePost = async (req, res) => {
 
 //포스트 수정
 export const updatePost = async (req, res) => {
+  const tags = JSON.parse(req.body.tags);
+  const form = {
+    ...req.body,
+    tags,
+  };
   const { postId } = req.params;
   try {
+    let result = null;
     const post = await Post.findById(postId);
     // cloudinary 삭제후 업로드 (수정)
-    await cloudinary.uploader.destroy(post.image.imageId);
-    const result = await cloudinary.uploader.upload(req.file.path);
+    // 이미지 파일이 있는 경우
+    if (req.file) {
+      // 원본 게시글에 이미지가 있던경우
+      if (!post.image === "") {
+        await cloudinary.uploader.destroy(post.image.imageId);
+        result = await cloudinary.uploader.upload(req.file.path);
+      }
+      // 원본 게시글에 이미지가 없던 경우
+      result = await cloudinary.uploader.upload(req.file.path);
+    }
 
     const updatedPost = await Post.findByIdAndUpdate(
       postId,
       {
-        ...req.body,
-        image: {
-          imageUrl: result.secure_url,
-          imageId: result.public_id,
-        },
+        ...form,
+        image: result
+          ? {
+              imageUrl: result.secure_url,
+              imageId: result.public_id,
+            }
+          : "",
       },
       {
         new: true,
